@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:personal_expenses/presentation/screens/onboarding.dart';
 import './presentation/screens/login_screen.dart';
 import './presentation/screens/singup_screen.dart';
 void main() {
@@ -19,7 +20,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-    home: SignUpScreen()
+    home: Onboarding()
         // Scaffold(
     // body: Column(
     //   children: [

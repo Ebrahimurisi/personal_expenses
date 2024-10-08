@@ -187,7 +187,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     if (_isAcceptedTerms) {
-                      _showSuccessDialog(context);
+                      // _showSuccessDialog(context);
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
