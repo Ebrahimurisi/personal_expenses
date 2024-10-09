@@ -21,17 +21,8 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
     home: Onboarding()
-        // Scaffold(
-    // body: Column(
-    //   children: [
-    //
-    //       const Text("Wajdy"),
-    //       Lottie.network('https://lottie.host/3fca1209-09ce-4374-b4b1-ad51230cd881/3VvKtFZ9x8.json'),
-    //
-    //   ],
-    // ),
-    // ),
-    );
+
+
   }
 }
 
