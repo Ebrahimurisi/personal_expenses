@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:lottie/lottie.dart';
-import 'package:personal_expenses/presentation/screens/onboarding.dart';
+import 'package:personal_expenses/presentation/screens/bottomNavigation.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -10,9 +10,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return  MaterialApp(
       debugShowCheckedModeBanner: false,
-    home: Onboarding(),
+    home: NavigationBarBottom(),
     );
   }
 }
