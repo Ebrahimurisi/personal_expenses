@@ -11,7 +11,7 @@ class NavigationBarBottom extends StatefulWidget {
 }
 
 class _NavigationBarState extends State<NavigationBarBottom> {
-  int _currentIndex = 0; // الفهرس الحالي لعنصر التنقل النشط
+  int _currentIndex = 0; //
 
   // الشاشات الخاصة بالصفحات الثلاث (Home, Reports, Settings)
   final List<Widget> _pages = [

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:personal_expenses/presentation/screens/bottomNavigation.dart';
+import 'package:personal_expenses/presentation/screens/home.dart';
 import 'package:personal_expenses/presentation/screens/login_screen.dart';
-
 
 class SignUpScreen extends StatefulWidget {
   @override
@@ -13,7 +14,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
-  final TextEditingController confirmPasswordController = TextEditingController();
+  final TextEditingController confirmPasswordController =
+      TextEditingController();
   bool _isAcceptedTerms = false;
 
   @override
@@ -22,27 +24,29 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: AppBar(
         backgroundColor: Colors.black38,
         centerTitle: true,
-        title: Text('Sign Up'),
+        title: const Text('Sign Up'),
       ),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Form(
           key: _formKey,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SvgPicture.asset('assets/images/logo.svg',
-                height: 120,),
+              SvgPicture.asset(
+                'assets/images/logo.svg',
+                height: 120,
+              ),
               // Name Field
               TextFormField(
                 controller: nameController,
                 decoration: InputDecoration(
                   labelText: 'Name',
-                  prefixIcon: Icon(Icons.person),
+                  prefixIcon: const Icon(Icons.person),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.black38),
+                    borderSide: const BorderSide(color: Colors.black38),
                   ),
                   focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(
@@ -58,17 +62,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
 
               // Email Field
               TextFormField(
                 controller: emailController,
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  prefixIcon: Icon(Icons.email),
+                  prefixIcon: const Icon(Icons.email),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.black38),
+                    borderSide: const BorderSide(color: Colors.black38),
                   ),
                   focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(
@@ -87,17 +91,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
 
               // Password Field
               TextFormField(
                 controller: passwordController,
                 decoration: InputDecoration(
                   labelText: 'Password',
-                  prefixIcon: Icon(Icons.lock),
+                  prefixIcon: const Icon(Icons.lock),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.black38),
+                    borderSide: const BorderSide(color: Colors.black38),
                   ),
                   focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(
@@ -117,17 +121,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
 
               // Confirm Password Field
               TextFormField(
                 controller: confirmPasswordController,
                 decoration: InputDecoration(
                   labelText: 'Confirm Password',
-                  prefixIcon: Icon(Icons.lock_outline),
+                  prefixIcon: const Icon(Icons.lock_outline),
                   enabledBorder: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.black38),
+                    borderSide: const BorderSide(color: Colors.black38),
                   ),
                   focusedBorder: const UnderlineInputBorder(
                     borderSide: BorderSide(
@@ -144,7 +148,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
 
               // Terms and Conditions Checkbox
               Row(
@@ -165,11 +169,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         _isAcceptedTerms = !_isAcceptedTerms;
                       });
                     },
-                    child: Text('I accept the terms and conditions'),
+                    child: const Text('I accept the terms and conditions'),
                   ),
                 ],
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
 
               // Sign Up Button
               ElevatedButton(
@@ -177,29 +181,33 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   foregroundColor: Colors.white,
                   backgroundColor: Colors.black38,
                   // Text color
-                  padding: EdgeInsets.symmetric(vertical: 15),
+                  padding: const EdgeInsets.symmetric(vertical: 15),
                   // Button height
                   shape: RoundedRectangleBorder(
-                    borderRadius:
-                    BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(10),
                   ),
                 ),
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     if (_isAcceptedTerms) {
-                      // _showSuccessDialog(context);
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NavigationBarBottom(),
+                        ),
+                      );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
+                        const SnackBar(
                             content:
                                 Text('Please accept the terms and conditions')),
                       );
                     }
                   }
                 },
-                child: Text('Sign Up'),
+                child: const Text('Sign Up'),
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
 
               // Login Link
               Center(
@@ -208,8 +216,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(builder: (context) => LoginScreen()),
-                    );                  },
-                  child: Text(
+                    );
+                  },
+                  child: const Text(
                     'Already have an account? Login',
                     style: TextStyle(color: Colors.blue),
                   ),
@@ -221,6 +230,4 @@ class _SignUpScreenState extends State<SignUpScreen> {
       ),
     );
   }
-
-
 }
