@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
-
+import 'package:personal_expenses/presentation/screens/expenses.dart';
 import 'AddEntryScreen.dart';
 
 class HomePage extends StatefulWidget {
@@ -129,7 +129,9 @@ class _HomePageState extends State<HomePage> {
                       ),
                       Spacer(),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => Expenses(),),);;
+                        },
                         child: const Text(
                           'View all',
                           style: TextStyle(

@@ -1,16 +1,65 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import '/theme_provider.dart';
 
-
-class SettingsScreen extends StatefulWidget {
+class SettingsScreen extends StatelessWidget {
   @override
-  _SettingsScreenState createState() => _SettingsScreenState();
-}
+  Widget build(BuildContext context) {
+    // Access the ThemeProvider from the widget tree
+    ThemeProvider themeProvider = Provider.of<ThemeProvider>(context);
 
-class _SettingsScreenState extends State<SettingsScreen> {
-  String _themeMode = 'System Mode'; // الوضع الافتراضي
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('My Expenses'),
+        centerTitle: true,
+        backgroundColor:
+            themeProvider.isLightTheme ? Colors.white : Colors.grey[900],
+        elevation: 0,
+      ),
+      body: ListView(
+        padding: const EdgeInsets.all(16.0),
+        children: [
+          // Theme Mode Section
+          Text(
+            'Theme Mode',
+            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 8.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              _buildThemeButton(context, true, themeProvider.isLightTheme),
+              _buildThemeButton(context, false, themeProvider.isLightTheme),
+            ],
+          ),
+          Divider(height: 32.0),
 
-  // الوظيفة التي تعرض النافذة المنبثقة عند النقر على "Tell us a problem or leave a comment"
-  void _showCommentSheet() {
+          // Language Section
+          ListTile(
+            leading: Icon(Icons.language, color: Colors.black54),
+            title: Text(
+              'Language',
+              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+            ),
+            onTap: () {},
+          ),
+          Divider(height: 32.0),
+
+          // "Tell us a problem or leave a comment" Section
+          ListTile(
+              leading: Icon(Icons.comment, color: Colors.black54),
+              title: Text(
+                'Tell us a problem or leave a comment',
+                style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
+              ),
+              onTap: () => _showCommentSheet(context)),
+        ],
+      ),
+    );
+  }
+
+  // Function to show the bottom sheet for comments
+  void _showCommentSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
       shape: RoundedRectangleBorder(
@@ -42,17 +91,17 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   border: OutlineInputBorder(),
                   hintText: 'Tell us your problem or leave a comment',
                 ),
-                maxLines: 4, // عدد الأسطر المسموح بها في مربع النص
+                maxLines: 4,
               ),
               SizedBox(height: 16.0),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context); // إغلاق النافذة بعد الضغط على زر "Submit"
+                    Navigator.pop(context);
                   },
                   child: Text('Submit'),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.blue, // لون الزر
+                    backgroundColor: Colors.blue,
                   ),
                 ),
               ),
@@ -63,79 +112,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('My Expenses'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
-      ),
-      body: ListView(
-        padding: EdgeInsets.all(16.0),
-        children: [
-          // قسم Theme Mode
-          Text(
-            'Theme Mode',
-            style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 8.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              _buildThemeButton('Light mode'),
-              _buildThemeButton('Dark mode'),
-            ],
-          ),
-          Divider(height: 32.0),
+  // Build Theme Mode Button
+  Widget _buildThemeButton(
+      BuildContext context, bool isLight, bool currentMode) {
+    // Get the ThemeProvider from the context
+    ThemeProvider themeProvider =
+        Provider.of<ThemeProvider>(context, listen: false);
 
-          // قسم اللغة
-          ListTile(
-            leading: Icon(Icons.language, color: Colors.black54),
-            title: Text(
-              'Language',
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
-            ),
-            onTap: () {},
-          ),
-          Divider(height: 32.0),
-
-          // قسم "Tell us a problem or leave a comment"
-          ListTile(
-            leading: Icon(Icons.comment, color: Colors.black54),
-            title: Text(
-              'Tell us a problem or leave a comment',
-              style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
-            ),
-            onTap: _showCommentSheet, // استدعاء النافذة عند النقر
-          ),
-        ],
-      ),
-    );
-  }
-
-  // بناء زر وضع الثيم
-  Widget _buildThemeButton(String mode) {
     return GestureDetector(
       onTap: () {
-        setState(() {
-          _themeMode = mode;
-        });
+        // Toggle the theme when tapped
+        themeProvider.toggleTheme(isLight);
       },
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         decoration: BoxDecoration(
-          color: _themeMode == mode ? Colors.blue[100] : Colors.grey[200],
+          color: currentMode == isLight ? Colors.blue[100] : Colors.grey[200],
           borderRadius: BorderRadius.circular(24.0),
-          border: _themeMode == mode ? Border.all(color: Colors.blue) : null,
+          border:
+              currentMode == isLight ? Border.all(color: Colors.blue) : null,
         ),
         child: Text(
-          mode,
+          isLight ? 'Light Mode' : 'Dark Mode',
           style: TextStyle(
             fontSize: 14.0,
             fontWeight: FontWeight.w600,
-            color: _themeMode == mode ? Colors.blue : Colors.black,
+            color: currentMode == isLight ? Colors.blue : Colors.black,
           ),
         ),
       ),

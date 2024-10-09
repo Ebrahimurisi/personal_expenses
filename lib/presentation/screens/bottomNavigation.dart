@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:personal_expenses/presentation/screens/home.dart';
 import 'package:personal_expenses/presentation/screens/reports.dart';
 import 'package:personal_expenses/presentation/screens/setting.dart';
-
+import 'package:personal_expenses/main.dart';
 
 
 class NavigationBarBottom extends StatefulWidget {
@@ -13,7 +13,7 @@ class NavigationBarBottom extends StatefulWidget {
 class _NavigationBarState extends State<NavigationBarBottom> {
   int _currentIndex = 0; //
 
-  // الشاشات الخاصة بالصفحات الثلاث (Home, Reports, Settings)
+  // BottomNavigation Screens (Home, Reports, Settings)
   final List<Widget> _pages = [
     HomePage(),
     ReportsPage(),
@@ -23,34 +23,34 @@ class _NavigationBarState extends State<NavigationBarBottom> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_currentIndex], // عرض الصفحة الحالية بناءً على الفهرس
+      body: _pages[_currentIndex], // Show current screens according to index
 
-      // شريط التنقل السفلي
+      // bottomNavigationBar
       bottomNavigationBar:BottomNavigationBar(
-        currentIndex: _currentIndex, // العنصر النشط حاليًا
+        currentIndex: _currentIndex, // currentIndex
         onTap: (index) {
           setState(() {
-            _currentIndex = index; // تغيير الصفحة عند النقر على عنصر في الشريط
+            _currentIndex = index; // change page
           });
         },
-        items: [
+        items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.home), // أيقونة الصفحة الرئيسية
+            icon: Icon(Icons.home), // Home Icon
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.pie_chart), // أيقونة التقارير
+            icon: Icon(Icons.pie_chart), // Reports Icon
             label: 'Reports',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.settings), // أيقونة الإعدادات
+            icon: Icon(Icons.settings), // Settings Icon
             label: 'Settings',
           ),
         ],
-        selectedItemColor: Colors.blue, // لون العنصر النشط
-        unselectedItemColor: Colors.grey, // لون العناصر غير النشطة
-        showUnselectedLabels: true, // إظهار نص العنصر حتى لو كان غير نشط
-        type: BottomNavigationBarType.fixed, // نوع الشريط (ثابت)
+        selectedItemColor: Colors.blue, // Color of the selected bar item
+        unselectedItemColor: Colors.grey, // Color of the unselected bar item
+        showUnselectedLabels: true, // show labels of unselected bar items
+        type: BottomNavigationBarType.fixed, // type of BottomNavigationBar
       ),
     );
   }

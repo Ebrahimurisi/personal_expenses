@@ -16,6 +16,9 @@ class _ExpensesState extends State<Expenses> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        actions: [IconButton(onPressed: (){
+          Navigator.pop(context);
+        }, icon: Icon(Icons.arrow_back))],
         title: Text("All expenses"),
         leading: IconButton(
           icon: Icon(Icons.filter_list), // Use the filter icon from Material Icons
