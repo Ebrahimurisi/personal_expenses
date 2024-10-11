@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:personal_expenses/data/model/models.dart';
+import 'package:personal_expenses/domain/expense_provider.dart';
+import 'package:provider/provider.dart';
 
 class AddEntryScreen extends StatefulWidget {
   @override
@@ -21,123 +24,138 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // حقل المبلغ
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Amount', // النص التوضيحي
-                prefixIcon: Icon(Icons.attach_money),
-                border: OutlineInputBorder(),
-              ),
-              keyboardType: TextInputType.number, // نوع لوحة المفاتيح: أرقام
-            ),
-            SizedBox(height: 16.0),
-
-            // حقل الفئة
-            Row(
+        child: Consumer<ExpenseController>(
+          builder: (BuildContext context, ExpenseController p, Widget? child) {
+            return Stack(
               children: [
-                Icon(Icons.category, color: Colors.black54),
-                SizedBox(width: 8.0),
-                Expanded(
-                  child: Text(
-                    _selectedCategory, // عرض الفئة المختارة
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.arrow_drop_down),
-                  onPressed: () {
-                    _showCategoryPicker(context); // اختيار الفئة عند الضغط
-                  },
-                ),
-              ],
-            ),
-            Divider(),
-
-            // حقل طريقة الدفع
-            Row(
-              children: [
-                Icon(Icons.account_balance_wallet, color: Colors.black54),
-                SizedBox(width: 8.0),
-                Expanded(
-                  child: Text(
-                    _selectedPaymentMethod, // عرض طريقة الدفع المختارة
-                    style: TextStyle(fontSize: 16.0),
-                  ),
-                ),
-                IconButton(
-                  icon: Icon(Icons.arrow_drop_down),
-                  onPressed: () {
-                    _showPaymentMethodPicker(context); // اختيار طريقة الدفع عند الضغط
-                  },
-                ),
-              ],
-            ),
-            Divider(),
-
-            // حقل الملاحظات
-            TextFormField(
-              decoration: InputDecoration(
-                labelText: 'Notes', // النص التوضيحي
-                prefixIcon: Icon(Icons.notes),
-                border: OutlineInputBorder(),
-              ),
-              maxLines: 3, // السماح بثلاثة أسطر
-            ),
-            SizedBox(height: 16.0),
-
-            // حقل التاريخ والوقت
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                // اختيار التاريخ
-                InkWell(
-                  onTap: () => _selectDate(context),
-                  child: Row(
-                    children: [
-                      Icon(Icons.calendar_today),
-                      SizedBox(width: 8.0),
-                      Text(
-                        DateFormat.yMd().format(_selectedDate), // عرض التاريخ المختار
-                        style: TextStyle(fontSize: 16.0),
+                if(p.isLoading)
+                  CircularProgressIndicator()
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // حقل المبلغ
+                    TextFormField(
+                      decoration: const InputDecoration(
+                        labelText: 'Amount', // النص التوضيحي
+                        prefixIcon: Icon(Icons.attach_money),
+                        border: OutlineInputBorder(),
                       ),
-                    ],
-                  ),
-                ),
+                      keyboardType: TextInputType.number, // نوع لوحة المفاتيح: أرقام
+                    ),
+                    SizedBox(height: 16.0),
 
-                // اختيار الوقت
-                InkWell(
-                  onTap: () => _selectTime(context),
-                  child: Row(
-                    children: [
-                      Icon(Icons.access_time),
-                      SizedBox(width: 8.0),
-                      Text(
-                        _selectedTime.format(context), // عرض الوقت المختار
-                        style: TextStyle(fontSize: 16.0),
+                    // حقل الفئة
+                    Row(
+                      children: [
+                        Icon(Icons.category, color: Colors.black54),
+                        SizedBox(width: 8.0),
+                        Expanded(
+                          child: Text(
+                            _selectedCategory, // عرض الفئة المختارة
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.arrow_drop_down),
+                          onPressed: () {
+                            _showCategoryPicker(context); // اختيار الفئة عند الضغط
+                          },
+                        ),
+                      ],
+                    ),
+                    Divider(),
+
+                    // حقل طريقة الدفع
+                    Row(
+                      children: [
+                        Icon(Icons.account_balance_wallet, color: Colors.black54),
+                        SizedBox(width: 8.0),
+                        Expanded(
+                          child: Text(
+                            _selectedPaymentMethod, // عرض طريقة الدفع المختارة
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.arrow_drop_down),
+                          onPressed: () {
+                            _showPaymentMethodPicker(context); // اختيار طريقة الدفع عند الضغط
+                          },
+                        ),
+                      ],
+                    ),
+                    Divider(),
+
+                    // حقل الملاحظات
+                    TextFormField(
+                      decoration: InputDecoration(
+                        labelText: 'Notes', // النص التوضيحي
+                        prefixIcon: Icon(Icons.notes),
+                        border: OutlineInputBorder(),
                       ),
-                    ],
-                  ),
+                      maxLines: 3, // السماح بثلاثة أسطر
+                    ),
+                    SizedBox(height: 16.0),
+
+                    // حقل التاريخ والوقت
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // اختيار التاريخ
+                        InkWell(
+                          onTap: () => _selectDate(context),
+                          child: Row(
+                            children: [
+                              Icon(Icons.calendar_today),
+                              SizedBox(width: 8.0),
+                              Text(
+                                DateFormat.yMd().format(_selectedDate), // عرض التاريخ المختار
+                                style: TextStyle(fontSize: 16.0),
+                              ),
+                            ],
+                          ),
+                        ),
+
+                        // اختيار الوقت
+                        InkWell(
+                          onTap: () => _selectTime(context),
+                          child: Row(
+                            children: [
+                              Icon(Icons.access_time),
+                              SizedBox(width: 8.0),
+                              Text(
+                                _selectedTime.format(context), // عرض الوقت المختار
+                                style: TextStyle(fontSize: 16.0),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: 32.0),
+
+                    // زر الإضافة
+                    Center(
+                      child: Consumer<ExpenseController>(
+                        builder: (BuildContext context, ExpenseController p, Widget? child) {
+                          return ElevatedButton(
+                            onPressed: () {
+                              p.createExpense(Expense(amount: amount, description: description, categoryId: categoryId, date: date, userId: userId));
+                              Navigator.pop(context); // إغلاق الشاشة بعد الضغط على "Add"
+                            },
+                            child: Text('Add'),
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(double.infinity, 50), // زر بعرض كامل
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
               ],
-            ),
-            SizedBox(height: 32.0),
-
-            // زر الإضافة
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context); // إغلاق الشاشة بعد الضغط على "Add"
-                },
-                child: Text('Add'),
-                style: ElevatedButton.styleFrom(
-                  minimumSize: Size(double.infinity, 50), // زر بعرض كامل
-                ),
-              ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

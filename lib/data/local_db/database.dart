@@ -2,123 +2,79 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
-// إنشاء كلاس لإدارة قاعدة البيانات
-class DatabaSql{
+class DatabaseProvider {
+  static const String _databaseName = "expenses.db";
+  static const int _databaseVersion = 1;
 
-  static final DatabaSql sqlDb =DatabaSql();
   static Database? _database;
 
-  // أسماء الجداول
-  static final tableUsers = 'Users';
-  static final tableExpenses = 'Expenses';
-  static final tableCategories = 'Categories';
-  static final tableReports = 'Reports';
-  static final tableSettings = 'Settings';
-
-  //get Database
-  Future<Database?> get database async{
-    if(_database==null) {
-      return await initialDB();
-    }
-    else{
-      return _database;
-    }
+//get
+  static Future<Database> getDatabaseInstance() async {
+    if (_database != null) return _database!;
+    _database = await _initDatabase();
+    return _database!;
   }
 
-  //initial Database
-  Future<Database> initialDB()async{
-    String dataBasePath=await getDatabasesPath();
-    String path=join(dataBasePath,'expenses_management.db');
-    Database myDb= await openDatabase(path,onCreate: _onCreate,version: 1);
-    return myDb;
-
+//initail
+  static Future<Database> _initDatabase() async {
+    String path = join(await getDatabasesPath(), _databaseName);
+    return await openDatabase(
+      path,
+      version: _databaseVersion,
+      onCreate: _onCreate,
+      onUpgrade: _onUpgrade,
+    );
   }
-  // إنشاء الجداول
-  Future _onCreate(Database db, int version) async {
+
+  //onCreate
+  static Future _onCreate(Database db, int version) async {
     await db.execute('''
-      CREATE TABLE $tableUsers (
-        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        full_name TEXT NOT NULL,
-        email TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+      CREATE TABLE users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        username TEXT UNIQUE,
+        password TEXT
       )
-    ''').then((value)  {
-      print('\n\n\n ================Create First Table Success Fully\n\n\n ================');
-    }).catchError((onError)
-    {
-      print('\n\n\n ================ Can not Create Table:${onError.toString()}===========\n\n\n');
-    });
+    ''');
 
     await db.execute('''
-      CREATE TABLE $tableCategories (
-        category_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
-        category_name TEXT NOT NULL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES $tableUsers(user_id)
+      CREATE TABLE categories (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT
       )
-    ''').then((value)  {
-      print('\n\n\n ================Create First Table Success Fully\n\n\n ================');
-    }).catchError((onError)
-    {
-      print('\n\n\n ================ Can not Create Table:${onError.toString()}===========\n\n\n');
-    });
+    ''');
 
     await db.execute('''
-      CREATE TABLE $tableExpenses (
-        expense_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
-        expense_name TEXT NOT NULL,
-        amount REAL NOT NULL,
+      CREATE TABLE expenses (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        amount REAL,
+        description TEXT,
         category_id INTEGER,
-        expense_type TEXT CHECK(expense_type IN ('Income', 'Expense')),
-        date TEXT NOT NULL,
-        note TEXT,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES $tableUsers(user_id),
-        FOREIGN KEY (category_id) REFERENCES $tableCategories(category_id)
+        date TEXT,
+        user_id INTEGER,
+        FOREIGN KEY (category_id) REFERENCES categories(id),
+        FOREIGN KEY (user_id) REFERENCES users(id)
       )
-    ''').then((value)  {
-      print('\n\n\n ================Create First Table Success Fully\n\n\n ================');
-    }).catchError((onError)
-    {
-      print('\n\n\n ================ Can not Create Table:${onError.toString()}===========\n\n\n');
-    });
+    ''');
 
     await db.execute('''
-      CREATE TABLE $tableReports (
-        report_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
-        report_name TEXT NOT NULL,
-        start_date TEXT NOT NULL,
-        end_date TEXT NOT NULL,
-        total_income REAL,
-        total_expense REAL,
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES $tableUsers(user_id)
+      CREATE TABLE settings (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        language TEXT,
+        theme TEXT
       )
-    ''').then((value)  {
-      print('\n\n\n ================Create First Table Success Fully\n\n\n ================');
-    }).catchError((onError)
-    {
-      print('\n\n\n ================ Can not Create Table:${onError.toString()}===========\n\n\n');
-    });
+    ''');
+  }
 
-    await db.execute('''
-      CREATE TABLE $tableSettings (
-        settings_id INTEGER PRIMARY KEY AUTOINCREMENT,
-        user_id INTEGER,
-        theme TEXT CHECK(theme IN ('Light', 'Dark')) DEFAULT 'Light',
-        notifications INTEGER DEFAULT 1, 
-        created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY (user_id) REFERENCES $tableUsers(user_id)
-      )
-    ''').then((value)  {
-      print('\n\n\n ================Create First Table Success Fully\n\n\n ================');
-    }).catchError((onError)
-    {
-      print('\n\n\n ================ Can not Create Table:${onError.toString()}===========\n\n\n');
-    });
+//onUpgrade
+  static Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
+    if (oldVersion < newVersion) {
+      await db.execute('ALTER TABLE users ADD COLUMN email TEXT');
+    }
+  }
+
+
+  static Future<void> closeDatabase() async {
+    final db = await getDatabaseInstance();
+    await db.close();
   }
 }

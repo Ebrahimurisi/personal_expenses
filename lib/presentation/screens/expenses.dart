@@ -27,7 +27,7 @@ class _ExpensesState extends State<Expenses> {
             showMenu(
               context: context,
               position: RelativeRect.fromLTRB(0, 50, 0, 0), // Position the menu
-              items: [
+              items:const [
                 PopupMenuItem<String>(
                   value: 'Today',
                   child: Text('Today'),
@@ -40,7 +40,7 @@ class _ExpensesState extends State<Expenses> {
                   value: 'Last 30 Days',
                   child: Text('Last 30 Days'),
                 ),
-                PopupMenuItem<String>(
+                 PopupMenuItem<String>(
                   value: 'Last 365 Days',
                   child: Text('Last 365 Days'),
                 ),
