@@ -14,6 +14,7 @@ class _ReportsPageState extends State<ReportsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text('My Expenses'),
         centerTitle: true,
         backgroundColor: Colors.white,

@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:personal_expenses/data/model/models.dart';
 import 'package:personal_expenses/domain/expense_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:personal_expenses/theme_provider.dart'; // Import the ThemeProvider
+import '../../data/repository/expensesRepository.dart';
 
 class AddEntryScreen extends StatefulWidget {
   @override
@@ -12,15 +14,40 @@ class AddEntryScreen extends StatefulWidget {
 class _AddEntryScreenState extends State<AddEntryScreen> {
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
-  String _selectedCategory = 'Donations and Gifts'; // الفئة الافتراضية
-  String _selectedPaymentMethod = 'Cash'; // طريقة الدفع الافتراضية
+  String _selectedCategory = 'Donations and Gifts'; // Default category
+  String _selectedPaymentMethod = 'Cash'; // Default payment method
+
+  // Controllers to capture user input for amount and notes
+  final TextEditingController _amountController = TextEditingController();
+  final TextEditingController _notesController = TextEditingController();
+
+  // Mock userId (this can be replaced with the actual userId)
+  int userId = 1;
+
+  @override
+  void dispose() {
+    _amountController.dispose();
+    _notesController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeProvider>(context); // Access the ThemeProvider
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Financial Entry'),
         centerTitle: true,
+        actions: [
+          // Theme toggle switch in the AppBar
+          Switch(
+            value: themeProvider.isLightTheme,
+            onChanged: (value) {
+              themeProvider.toggleTheme(value); // Call to change theme
+            },
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -28,80 +55,81 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
           builder: (BuildContext context, ExpenseController p, Widget? child) {
             return Stack(
               children: [
-                if(p.isLoading)
-                  CircularProgressIndicator()
+                if (p.isLoading) CircularProgressIndicator(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // حقل المبلغ
+                    // Amount field
                     TextFormField(
+                      controller: _amountController,
                       decoration: const InputDecoration(
-                        labelText: 'Amount', // النص التوضيحي
+                        labelText: 'Amount',
                         prefixIcon: Icon(Icons.attach_money),
                         border: OutlineInputBorder(),
                       ),
-                      keyboardType: TextInputType.number, // نوع لوحة المفاتيح: أرقام
+                      keyboardType: TextInputType.number,
                     ),
                     SizedBox(height: 16.0),
 
-                    // حقل الفئة
+                    // Category picker
                     Row(
                       children: [
                         Icon(Icons.category, color: Colors.black54),
                         SizedBox(width: 8.0),
                         Expanded(
                           child: Text(
-                            _selectedCategory, // عرض الفئة المختارة
+                            _selectedCategory,
                             style: TextStyle(fontSize: 16.0),
                           ),
                         ),
                         IconButton(
                           icon: Icon(Icons.arrow_drop_down),
                           onPressed: () {
-                            _showCategoryPicker(context); // اختيار الفئة عند الضغط
+                            _showCategoryPicker(context);
                           },
                         ),
                       ],
                     ),
                     Divider(),
 
-                    // حقل طريقة الدفع
+                    // Payment method picker
                     Row(
                       children: [
                         Icon(Icons.account_balance_wallet, color: Colors.black54),
                         SizedBox(width: 8.0),
                         Expanded(
                           child: Text(
-                            _selectedPaymentMethod, // عرض طريقة الدفع المختارة
+                            _selectedPaymentMethod,
                             style: TextStyle(fontSize: 16.0),
                           ),
                         ),
                         IconButton(
                           icon: Icon(Icons.arrow_drop_down),
                           onPressed: () {
-                            _showPaymentMethodPicker(context); // اختيار طريقة الدفع عند الضغط
+                            _showPaymentMethodPicker(context);
                           },
                         ),
                       ],
                     ),
                     Divider(),
 
-                    // حقل الملاحظات
+                    // Notes field
                     TextFormField(
+                      controller: _notesController,
                       decoration: InputDecoration(
-                        labelText: 'Notes', // النص التوضيحي
+                        labelText: 'Notes',
                         prefixIcon: Icon(Icons.notes),
                         border: OutlineInputBorder(),
                       ),
-                      maxLines: 3, // السماح بثلاثة أسطر
+                      maxLines: 3,
                     ),
                     SizedBox(height: 16.0),
 
-                    // حقل التاريخ والوقت
+                    // Date and time picker
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // اختيار التاريخ
+                        // Select date
                         InkWell(
                           onTap: () => _selectDate(context),
                           child: Row(
@@ -109,14 +137,14 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                               Icon(Icons.calendar_today),
                               SizedBox(width: 8.0),
                               Text(
-                                DateFormat.yMd().format(_selectedDate), // عرض التاريخ المختار
+                                DateFormat.yMd().format(_selectedDate),
                                 style: TextStyle(fontSize: 16.0),
                               ),
                             ],
                           ),
                         ),
 
-                        // اختيار الوقت
+                        // Select time
                         InkWell(
                           onTap: () => _selectTime(context),
                           child: Row(
@@ -124,7 +152,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                               Icon(Icons.access_time),
                               SizedBox(width: 8.0),
                               Text(
-                                _selectedTime.format(context), // عرض الوقت المختار
+                                _selectedTime.format(context),
                                 style: TextStyle(fontSize: 16.0),
                               ),
                             ],
@@ -134,21 +162,56 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                     ),
                     SizedBox(height: 32.0),
 
-                    // زر الإضافة
+                    // Add button
                     Center(
-                      child: Consumer<ExpenseController>(
-                        builder: (BuildContext context, ExpenseController p, Widget? child) {
-                          return ElevatedButton(
-                            onPressed: () {
-                              p.createExpense(Expense(amount: amount, description: description, categoryId: categoryId, date: date, userId: userId));
-                              Navigator.pop(context); // إغلاق الشاشة بعد الضغط على "Add"
-                            },
-                            child: Text('Add'),
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size(double.infinity, 50), // زر بعرض كامل
-                            ),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final String amountInput = _amountController.text;
+
+                          // Validate amount input
+                          if (amountInput.isEmpty) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Please enter an amount')),
+                            );
+                            return;
+                          }
+
+                          // Convert amount to double
+                          final double amount = double.tryParse(amountInput) ?? 0.0;
+
+                          // Validate amount
+                          if (amount <= 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text('Invalid amount')),
+                            );
+                            return;
+                          }
+
+                          // Construct the expense
+                          Expense expense = Expense(
+                            amount: amount,
+                            description: _notesController.text,
+                            categoryId: _getCategoryId(_selectedCategory),
+                            date: DateTime(
+                              _selectedDate.year,
+                              _selectedDate.month,
+                              _selectedDate.day,
+                              _selectedTime.hour,
+                              _selectedTime.minute,
+                            ).toIso8601String(),
+                            userId: userId,
                           );
+
+                          // Save the expense
+                          p.createExpense(expense);
+
+                          // Close the screen
+                          Navigator.pop(context);
                         },
+                        child: Text('Add'),
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(double.infinity, 50),
+                        ),
                       ),
                     ),
                   ],
@@ -161,7 +224,21 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     );
   }
 
-  // دالة لاختيار الفئة
+  // Helper function to map selected category to its ID
+  int _getCategoryId(String categoryName) {
+    switch (categoryName) {
+      case 'Donations and Gifts':
+        return 1;
+      case 'Food and Drinks':
+        return 2;
+      case 'Utilities':
+        return 3;
+      default:
+        return 0;
+    }
+  }
+
+  // Category picker modal
   void _showCategoryPicker(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -201,7 +278,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     );
   }
 
-  // دالة لاختيار طريقة الدفع
+  // Payment method picker modal
   void _showPaymentMethodPicker(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -227,10 +304,10 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
               },
             ),
             ListTile(
-              title: Text('Bank Transfer'),
+              title: Text('Debit Card'),
               onTap: () {
                 setState(() {
-                  _selectedPaymentMethod = 'Bank Transfer';
+                  _selectedPaymentMethod = 'Debit Card';
                 });
                 Navigator.pop(context);
               },
@@ -241,27 +318,31 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     );
   }
 
-  // اختيار التاريخ
+  // Date picker
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
-      firstDate: DateTime(2020),
-      lastDate: DateTime(2030),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
     );
-    if (picked != null && picked != _selectedDate)
+    if (pickedDate != null && pickedDate != _selectedDate) {
       setState(() {
-        _selectedDate = picked;
+        _selectedDate = pickedDate;
       });
+    }
   }
 
-  // اختيار الوقت
+  // Time picker
   Future<void> _selectTime(BuildContext context) async {
-    final TimeOfDay? picked =
-    await showTimePicker(context: context, initialTime: _selectedTime);
-    if (picked != null && picked != _selectedTime)
+    final TimeOfDay? pickedTime = await showTimePicker(
+      context: context,
+      initialTime: _selectedTime,
+    );
+    if (pickedTime != null && pickedTime != _selectedTime) {
       setState(() {
-        _selectedTime = picked;
+        _selectedTime = pickedTime;
       });
+    }
   }
 }

@@ -11,7 +11,8 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Expenses'),
+        title: Text('Setting'),
+        automaticallyImplyLeading: false,
         centerTitle: true,
         backgroundColor:
             themeProvider.isLightTheme ? Colors.white : Colors.grey[900],

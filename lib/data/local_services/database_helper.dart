@@ -90,6 +90,15 @@ class DatabaseHelper {
     );
   }
 
+  Future<int> deleteExpense(int id) async {
+    final database = await db;
+    return await database.delete(
+      'expenses',
+      where: 'id = ?',
+      whereArgs: [id],
+    );
+  }
+
 
   Future<List<Expense>> getAllExpenses() async {
     final database = await db;
