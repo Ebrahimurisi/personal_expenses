@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:personal_expenses/presentation/screens/singup_screen.dart';
 
 import 'bottomNavigation.dart';
@@ -131,16 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: Colors.white,
-                    backgroundColor: Colors.black38,
-                    // Text color
-                    padding: const EdgeInsets.symmetric(vertical: 15),
-                    // Button height
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
+
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       Navigator.push(
@@ -157,7 +149,29 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 12),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton.icon(
+                  icon: const Icon(FontAwesomeIcons.houseMedical),
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => NavigationBarBottom(),
+                        ),
+                      ); // Perform login action
+                    }
+                  },
+                  label: const Text(
+                    'Sing in with Google',
+                    style: TextStyle(fontSize: 18),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 12),
+
 
               Center(
                 child: GestureDetector(
@@ -167,9 +181,13 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(builder: (context) => SignUpScreen()),
                     );
                   },
-                  child: const Text(
-                    'Don\'t have an account? Sign Up ',
-                    style: TextStyle(color: Colors.blue),
+                  child:const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Text(
+                    'Don\'t have an account? ',
+                  ), Text(
+                    'Sign Up ',
+                    style: TextStyle(color: Colors.blue),)]
                   ),
                 ),
               ),

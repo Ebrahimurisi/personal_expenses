@@ -59,6 +59,16 @@ ThemeData getLightTheme() => ThemeData(
       labelStyle: const TextStyle(color: Colors.teal), // Label color
       hintStyle: TextStyle(color: Colors.teal[200]), // Hint text color
     ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ElevatedButton.styleFrom(
+      foregroundColor: Colors.white, // Text color
+      backgroundColor: Colors.black38, // Button background color
+      padding: const EdgeInsets.symmetric(vertical: 15), // Button height
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+    ),
+  ),
   );
 
 
