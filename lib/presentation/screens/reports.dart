@@ -17,7 +17,7 @@ class _ReportsPageState extends State<ReportsPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: const Text('My Expenses'),
+        title: const Text('Reports'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

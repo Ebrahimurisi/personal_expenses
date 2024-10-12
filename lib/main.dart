@@ -1,10 +1,12 @@
 // import 'package:flutter/foundation.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:personal_expenses/constant/theme/light_theme.dart';
 import 'package:personal_expenses/constant/theme/dark_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:personal_expenses/presentation/screens/onboarding.dart';
 import 'package:provider/provider.dart';
 import 'package:personal_expenses/domain/expense_provider.dart';
+import 'firebase_options.dart';
 import 'theme_provider.dart'; // Import your theme provider here
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
@@ -37,6 +39,9 @@ import 'theme_provider.dart'; // Import your theme provider here
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   final themeProvider = ThemeProvider();
   await themeProvider.loadTheme();
   runApp(

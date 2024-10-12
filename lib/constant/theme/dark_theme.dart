@@ -5,12 +5,13 @@ ThemeData getDarkTheme() => ThemeData(
   primarySwatch: Colors.teal,
   primaryColor: Colors.teal, // Primary color for AppBar, FAB, etc.
   hintColor: Colors.orange, // Accent color for interactive elements
-  scaffoldBackgroundColor: Colors.teal.withOpacity(0.1), // Dark background for scaffold
-  appBarTheme: AppBarTheme(
+  scaffoldBackgroundColor: Colors.black26.withOpacity(0.1), // Dark background for scaffold
+  appBarTheme: const AppBarTheme(
     color: DarkThemeColors.appBarColor, // Same AppBar color
     elevation: 2.0,
-    iconTheme: const IconThemeData(color: Colors.white), // Icon color remains white
-    titleTextStyle: const TextStyle(
+    centerTitle: true,
+    iconTheme: IconThemeData(color: Colors.white), // Icon color remains white
+    titleTextStyle: TextStyle(
       color: DarkThemeColors.textColor, // White text for AppBar
       fontSize: 20.0,
       fontWeight: FontWeight.bold,
@@ -20,9 +21,9 @@ ThemeData getDarkTheme() => ThemeData(
     headlineLarge: TextStyle(fontSize: 32.0, fontWeight: FontWeight.bold, color: Colors.teal),
     headlineMedium: TextStyle(fontSize: 28.0, fontWeight: FontWeight.bold, color: Colors.teal),
     headlineSmall: TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold, color: Colors.teal),
-    bodyLarge: TextStyle(fontSize: 16.0, color: Colors.white70), // Light text color
-    bodyMedium: TextStyle(fontSize: 14.0, color: Colors.white60), // Slightly dimmed text
-    bodySmall: TextStyle(fontSize: 12.0, color: Colors.white54), // Further dimmed text
+    bodyLarge: TextStyle(fontSize: 16.0, color: Colors.black), // Light text color
+    bodyMedium: TextStyle(fontSize: 14.0, color: Colors.black), // Slightly dimmed text
+    bodySmall: TextStyle(fontSize: 12.0, color: Colors.black), // Further dimmed text
   ),
   buttonTheme: const ButtonThemeData(
     buttonColor: Colors.teal, // Same button background for dark theme

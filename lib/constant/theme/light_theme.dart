@@ -10,6 +10,7 @@ ThemeData getLightTheme() => ThemeData(
     appBarTheme: AppBarTheme(
       color: LightThemeColors.appBarColor, // Background color of the AppBar
       elevation: 0,
+      centerTitle: true,
       iconTheme: const IconThemeData(color: Colors.white), // Color of AppBar icons
       titleTextStyle: const TextStyle(
         color: Colors.black54,

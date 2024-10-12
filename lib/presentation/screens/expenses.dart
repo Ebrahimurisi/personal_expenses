@@ -106,7 +106,7 @@ class _ExpensesState extends State<Expenses> {
                         children: [
                           IconButton(onPressed: (){}, icon: const Icon(Icons.delete)),
                           IconButton(onPressed: (){
-                            Navigator.push(context, MaterialPageRoute(builder: (context)=> AddEntryScreen(),),);
+                            Navigator.push(context, MaterialPageRoute(builder: (context)=> const AddEntryScreen(),),);
                           }, icon: const Icon(Icons.update))
                         ],
                       )

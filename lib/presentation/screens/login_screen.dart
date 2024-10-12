@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:personal_expenses/presentation/screens/home.dart';
 import 'package:personal_expenses/presentation/screens/singup_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import '../../data/firebase/firebase_auth.dart';
 import 'bottomNavigation.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -16,8 +12,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // final FirebaseAuthService _auth = FirebaseAuthService();
-  // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
+
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -211,34 +206,34 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-
-  // _signInWithGoogle()async{
-  //
-  //   final GoogleSignIn _googleSignIn = GoogleSignIn();
-  //
-  //   try {
-  //
-  //     final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
-  //
-  //     if(googleSignInAccount != null ){
-  //       final GoogleSignInAuthentication googleSignInAuthentication = await
-  //       googleSignInAccount.authentication;
-  //
-  //       final AuthCredential credential = GoogleAuthProvider.credential(
-  //         idToken: googleSignInAuthentication.idToken,
-  //         accessToken: googleSignInAuthentication.accessToken,
-  //       );
-  //
-  //       await _firebaseAuth.signInWithCredential(credential);
-  //       Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
-  //     }
-  //
-  //   }catch(e) {
-  //     SnackBar(content: Text('data'));
-  //   }
-  //
-  //
-  // }
-
+//
+//   _signInWithGoogle()async{
+//
+//     final GoogleSignIn _googleSignIn = GoogleSignIn();
+//
+//     try {
+//
+//       final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+//
+//       if(googleSignInAccount != null ){
+//         final GoogleSignInAuthentication googleSignInAuthentication = await
+//         googleSignInAccount.authentication;
+//
+//         final AuthCredential credential = GoogleAuthProvider.credential(
+//           idToken: googleSignInAuthentication.idToken,
+//           accessToken: googleSignInAuthentication.accessToken,
+//         );
+//
+//         await _firebaseAuth.signInWithCredential(credential);
+//         Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
+//       }
+//
+//     }catch(e) {
+//       SnackBar(content: Text('data'));
+//     }
+//
+//
+//   }
+//
 }
 

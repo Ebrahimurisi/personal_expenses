@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:personal_expenses/presentation/screens/bottomNavigation.dart';
@@ -11,6 +12,7 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  //////////////////////////////////////////////////////
   final _formKey = GlobalKey<FormState>(); // Form key for validation
   final TextEditingController nameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
@@ -189,15 +191,30 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                onPressed: () {
+                onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     if (_isAcceptedTerms) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NavigationBarBottom(),
-                        ),
-                      );
+                      try {
+                        var auth = FirebaseAuth.instance;
+                        UserCredential user =
+                            await auth.createUserWithEmailAndPassword(
+                                email: emailController.text.trim(),
+                                password: passwordController.text.trim());
+                        ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content:
+                                    Text('You have logged in successfully')));
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const NavigationBarBottom(),
+                          ),
+                        );
+                      } catch (ex) {
+                        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                            content: Text(
+                                'email is already used,or there is an error ')));
+                      }
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -214,19 +231,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
               // Login Link
               Center(
                 child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const LoginScreen()),
-                    );
-                  },
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Text(
-                      'Already have an account?',
-                    ),Text('Log in', style: TextStyle(color: Colors.blue),)],
-                  )
-                ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const LoginScreen()),
+                      );
+                    },
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Already have an account?',
+                        ),
+                        Text(
+                          'Log in',
+                          style: TextStyle(color: Colors.blue),
+                        )
+                      ],
+                    )),
               ),
             ],
           ),

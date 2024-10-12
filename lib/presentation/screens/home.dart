@@ -32,7 +32,8 @@ class _HomePageState extends State<HomePage> {
         title: const Text('My Expenses'),
         automaticallyImplyLeading: false,
       ),
-      body: Column(
+      body: SingleChildScrollView(
+      child:Column(
         children: [
           Container(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
@@ -97,7 +98,7 @@ class _HomePageState extends State<HomePage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 _buildInfoCard('Income', '\$ 0', Icons.account_balance),
                 _buildInfoCard(
@@ -182,6 +183,7 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ],
+      ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
