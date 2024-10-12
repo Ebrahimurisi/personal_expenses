@@ -15,9 +15,6 @@ class SettingsScreen extends StatelessWidget {
         title: const Text('Setting'),
         automaticallyImplyLeading: false,
         centerTitle: true,
-        backgroundColor:
-            themeProvider.isLightTheme ? Colors.white : Colors.grey[900],
-        elevation: 0,
       ),
       body: ListView(
         padding: const EdgeInsets.all(16.0),

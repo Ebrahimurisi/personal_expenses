@@ -1,8 +1,11 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:personal_expenses/presentation/screens/singup_screen.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'bottomNavigation.dart';
+import 'home.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,7 +15,9 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-
+  final GoogleSignIn googleSignIn = GoogleSignIn();
+  bool _isSigning = false;
+  final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -22,9 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text(
-          'Personal Expenses',
-        ),
+        title: const Text('Personal Expenses'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
@@ -32,10 +35,7 @@ class _LoginScreenState extends State<LoginScreen> {
           key: _formKey,
           child: ListView(
             children: [
-              SvgPicture.asset(
-                'assets/images/logo.svg',
-                height: 120,
-              ),
+              SvgPicture.asset('assets/images/logo.svg', height: 120),
               const Center(
                 child: Text(
                   'Login',
@@ -48,7 +48,7 @@ class _LoginScreenState extends State<LoginScreen> {
               ),
               const SizedBox(height: 16),
 
-              // Email TextFormField
+              // Email Field
               TextFormField(
                 controller: emailController,
                 decoration: InputDecoration(
@@ -77,7 +77,8 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               const SizedBox(height: 16.0),
-              // Password TextFormField
+
+              // Password Field
               TextFormField(
                 controller: passwordController,
                 decoration: InputDecoration(
@@ -101,6 +102,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               const SizedBox(height: 7),
+
               // Forgot Password Link
               GestureDetector(
                 onTap: () {
@@ -114,32 +116,15 @@ class _LoginScreenState extends State<LoginScreen> {
                   ),
                 ),
               ),
-              const SizedBox(
-                height: 24,
-              ),
+              const SizedBox(height: 24),
 
               // Login Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  // style: ElevatedButton.styleFrom(
-                  //   foregroundColor: Colors.white,
-                  //   backgroundColor: Colors.black38,
-                  //   // Text color
-                  //   padding: const EdgeInsets.symmetric(vertical: 15),
-                  //   // Button height
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  // ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NavigationBarBottom(),
-                        ),
-                      ); // Perform login action
+                      _loginWithEmailPassword();
                     }
                   },
                   child: const Text(
@@ -149,39 +134,30 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ),
               const SizedBox(height: 12),
+
+              // Google Sign-In Button
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  // style: ElevatedButton.styleFrom(
-                  //   foregroundColor: Colors.white,
-                  //   backgroundColor: Colors.black38,
-                  //   // Text color
-                  //   padding: const EdgeInsets.symmetric(vertical: 15),
-                  //   // Button height
-                  //   shape: RoundedRectangleBorder(
-                  //     borderRadius: BorderRadius.circular(10),
-                  //   ),
-                  // ),
                   icon: const Icon(FontAwesomeIcons.google),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const NavigationBarBottom(),
-                        ),
-                      ); // Perform login action
-                    }
+                  onPressed: () async {
+                    setState(() {
+                      _isSigning = true;
+                    });
+                    await _signInWithGoogle();
+                    setState(() {
+                      _isSigning = false;
+                    });
                   },
                   label: const Text(
-                    'Sing in with Google',
+                    'Sign in with Google',
                     style: TextStyle(fontSize: 18),
                   ),
                 ),
               ),
               const SizedBox(height: 12),
 
-
+              // Sign Up Link
               Center(
                 child: GestureDetector(
                   onTap: () {
@@ -190,13 +166,18 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialPageRoute(builder: (context) => const SignUpScreen()),
                     );
                   },
-                  child:const Row(
+                  child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Text(
-                    'Don\'t have an account? ', style: TextStyle(color: Colors.black54),
-                  ), Text(
-                    'Sign Up ',
-                    style: TextStyle(color: Colors.blue),)]
+                    children: [
+                      Text(
+                        'Don\'t have an account? ',
+                        style: TextStyle(color: Colors.black54),
+                      ),
+                      Text(
+                        'Sign Up ',
+                        style: TextStyle(color: Colors.blue),
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -206,34 +187,55 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
-//
-//   _signInWithGoogle()async{
-//
-//     final GoogleSignIn _googleSignIn = GoogleSignIn();
-//
-//     try {
-//
-//       final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
-//
-//       if(googleSignInAccount != null ){
-//         final GoogleSignInAuthentication googleSignInAuthentication = await
-//         googleSignInAccount.authentication;
-//
-//         final AuthCredential credential = GoogleAuthProvider.credential(
-//           idToken: googleSignInAuthentication.idToken,
-//           accessToken: googleSignInAuthentication.accessToken,
-//         );
-//
-//         await _firebaseAuth.signInWithCredential(credential);
-//         Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
-//       }
-//
-//     }catch(e) {
-//       SnackBar(content: Text('data'));
-//     }
-//
-//
-//   }
-//
+
+  // Email/Password Login
+  void _loginWithEmailPassword() async {
+    try {
+      UserCredential userCredential = await _firebaseAuth.signInWithEmailAndPassword(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim(),
+      );
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const NavigationBarBottom()),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text('Login failed: $e'),
+      ));
+    }
+  }
+
+  // Google Sign-In
+  Future<void> _signInWithGoogle() async {
+    try {
+      // Trigger the Google Authentication flow
+      final GoogleSignInAccount? googleSignInAccount = await googleSignIn.signIn();
+      if (googleSignInAccount != null) {
+        final GoogleSignInAuthentication googleSignInAuthentication = await googleSignInAccount.authentication;
+
+        final AuthCredential credential = GoogleAuthProvider.credential(
+          idToken: googleSignInAuthentication.idToken,
+          accessToken: googleSignInAuthentication.accessToken,
+        );
+
+        await _firebaseAuth.signInWithCredential(credential);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
+    } catch (ex) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Google Sign-In failed: $ex')),
+      );
+    }
+  }
+
+  // This method is called to sign out the user
+  Future<void> handleSignOut() async {
+    await googleSignIn.signOut();
+    print('User signed out');
+  }
 }
 

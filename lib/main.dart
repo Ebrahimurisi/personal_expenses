@@ -1,5 +1,6 @@
 // import 'package:flutter/foundation.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:personal_expenses/constant/theme/light_theme.dart';
 import 'package:personal_expenses/constant/theme/dark_theme.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +9,12 @@ import 'package:provider/provider.dart';
 import 'package:personal_expenses/domain/expense_provider.dart';
 import 'firebase_options.dart';
 import 'theme_provider.dart'; // Import your theme provider here
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
+
 
 // Future<void> main() async {
 //   WidgetsFlutterBinding.ensureInitialized();
+//   final themeProvider = ThemeProvider();
+//   await themeProvider.loadTheme();
 //   if (kIsWeb) {
 //     await Firebase.initializeApp(
 //       options: const FirebaseOptions(
@@ -30,7 +32,7 @@ import 'theme_provider.dart'; // Import your theme provider here
 //     MultiProvider(
 //       providers: [
 //         ChangeNotifierProvider(create: (context) => ExpenseController()),
-//         ChangeNotifierProvider(create: (context) => ThemeProvider()), // Add your ThemeProvider
+//         ChangeNotifierProvider(create: (context) => themeProvider), // Add your ThemeProvider
 //       ],
 //       child: const MyApp(),
 //     ),

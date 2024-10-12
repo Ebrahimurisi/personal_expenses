@@ -25,7 +25,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black38,
         centerTitle: true,
         title: const Text('Sign Up'),
       ),
@@ -181,16 +180,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
               // Sign Up Button
               ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  foregroundColor: Colors.white,
-                  backgroundColor: Colors.black38,
-                  // Text color
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  // Button height
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                ),
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
                     if (_isAcceptedTerms) {

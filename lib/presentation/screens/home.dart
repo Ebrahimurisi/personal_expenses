@@ -29,7 +29,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('My Expenses'),
+        title: const Text('Home'),
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
