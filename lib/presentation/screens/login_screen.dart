@@ -1,17 +1,23 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:personal_expenses/presentation/screens/home.dart';
 import 'package:personal_expenses/presentation/screens/singup_screen.dart';
-
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import '../../data/firebase/firebase_auth.dart';
 import 'bottomNavigation.dart';
 
 class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
+
   @override
   _LoginScreenState createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  // final FirebaseAuthService _auth = FirebaseAuthService();
+  // final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -20,34 +26,29 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black38,
         centerTitle: true,
         title: const Text(
           'Personal Expenses',
-          style: TextStyle(
-            fontWeight: FontWeight.w400,
-            fontSize: 30,
-            color: Colors.white,
-          ),
         ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
-          child: Column(
-            // crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
+          child: ListView(
             children: [
               SvgPicture.asset(
                 'assets/images/logo.svg',
                 height: 120,
               ),
-              const Text(
-                'Login',
-                style: TextStyle(
-                  fontSize: 42,
-                  fontWeight: FontWeight.w500,
+              const Center(
+                child: Text(
+                  'Login',
+                  style: TextStyle(
+                    color: Colors.black54,
+                    fontSize: 42,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
               const SizedBox(height: 16),
@@ -81,7 +82,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 },
               ),
               const SizedBox(height: 16.0),
-
               // Password TextFormField
               TextFormField(
                 controller: passwordController,
@@ -93,12 +93,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     borderSide: const BorderSide(color: Colors.black38),
                   ),
                   prefixIcon: const Icon(Icons.lock),
-                  focusedBorder: const UnderlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.black38,
-                      width: 2,
-                    ),
-                  ),
+                  focusedBorder: const UnderlineInputBorder(),
                 ),
                 obscureText: true,
                 validator: (value) {
@@ -120,7 +115,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   'Forgot Password?',
                   style: TextStyle(
                     decoration: TextDecoration.underline,
-                    color: Colors.black38,
+                    color: Colors.blue,
                   ),
                 ),
               ),
@@ -132,13 +127,22 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-
+                  // style: ElevatedButton.styleFrom(
+                  //   foregroundColor: Colors.white,
+                  //   backgroundColor: Colors.black38,
+                  //   // Text color
+                  //   padding: const EdgeInsets.symmetric(vertical: 15),
+                  //   // Button height
+                  //   shape: RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.circular(10),
+                  //   ),
+                  // ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => NavigationBarBottom(),
+                          builder: (context) => const NavigationBarBottom(),
                         ),
                       ); // Perform login action
                     }
@@ -153,13 +157,23 @@ class _LoginScreenState extends State<LoginScreen> {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton.icon(
-                  icon: const Icon(FontAwesomeIcons.houseMedical),
+                  // style: ElevatedButton.styleFrom(
+                  //   foregroundColor: Colors.white,
+                  //   backgroundColor: Colors.black38,
+                  //   // Text color
+                  //   padding: const EdgeInsets.symmetric(vertical: 15),
+                  //   // Button height
+                  //   shape: RoundedRectangleBorder(
+                  //     borderRadius: BorderRadius.circular(10),
+                  //   ),
+                  // ),
+                  icon: const Icon(FontAwesomeIcons.google),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => NavigationBarBottom(),
+                          builder: (context) => const NavigationBarBottom(),
                         ),
                       ); // Perform login action
                     }
@@ -178,13 +192,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => SignUpScreen()),
+                      MaterialPageRoute(builder: (context) => const SignUpScreen()),
                     );
                   },
                   child:const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [Text(
-                    'Don\'t have an account? ',
+                    'Don\'t have an account? ', style: TextStyle(color: Colors.black54),
                   ), Text(
                     'Sign Up ',
                     style: TextStyle(color: Colors.blue),)]
@@ -197,4 +211,34 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
     );
   }
+
+  // _signInWithGoogle()async{
+  //
+  //   final GoogleSignIn _googleSignIn = GoogleSignIn();
+  //
+  //   try {
+  //
+  //     final GoogleSignInAccount? googleSignInAccount = await _googleSignIn.signIn();
+  //
+  //     if(googleSignInAccount != null ){
+  //       final GoogleSignInAuthentication googleSignInAuthentication = await
+  //       googleSignInAccount.authentication;
+  //
+  //       final AuthCredential credential = GoogleAuthProvider.credential(
+  //         idToken: googleSignInAuthentication.idToken,
+  //         accessToken: googleSignInAuthentication.accessToken,
+  //       );
+  //
+  //       await _firebaseAuth.signInWithCredential(credential);
+  //       Navigator.push(context, MaterialPageRoute(builder: (context)=> HomePage()));
+  //     }
+  //
+  //   }catch(e) {
+  //     SnackBar(content: Text('data'));
+  //   }
+  //
+  //
+  // }
+
 }
+

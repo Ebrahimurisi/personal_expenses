@@ -1,16 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:personal_expenses/data/model/onboarding_info.dart';
 import 'package:personal_expenses/presentation/screens/login_screen.dart';
-import 'package:personal_expenses/presentation/screens/singup_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
+
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();
 }
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
-  PageController _pageController = PageController();
+  final PageController _pageController = PageController();
   int currentPage = 0;
   static OnboardingItem control = OnboardingItem();
 
@@ -29,7 +30,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       // If the user has seen the onboarding screen, go directly to SignUpScreen
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
       );
     }
   }
@@ -40,7 +41,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     await prefs.setBool('seenOnboarding', true);
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => LoginScreen()),
+      MaterialPageRoute(builder: (context) => const LoginScreen()),
     );
   }
 
@@ -84,7 +85,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                 } else {
                   // Go to the next page
                   _pageController.nextPage(
-                    duration: Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 300),
                     curve: Curves.ease,
                   );
                 }
@@ -104,7 +105,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return Container(
       height: 10,
       width: currentPage == index ? 20 : 10,
-      margin: EdgeInsets.only(right: 5),
+      margin: const EdgeInsets.only(right: 5),
       decoration: BoxDecoration(
         color: currentPage == index ? Colors.blue : Colors.grey,
         borderRadius: BorderRadius.circular(5),
@@ -117,7 +118,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 class OnboardingContent extends StatelessWidget {
   final String title, subtitle, image;
 
-  OnboardingContent({
+  const OnboardingContent({super.key, 
     required this.title,
     required this.subtitle,
     required this.image,
@@ -129,16 +130,16 @@ class OnboardingContent extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Image.network(image, height: 300, width: 300),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Text(
           title,
-          style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Text(
           subtitle,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16),
         ),
       ],
     );

@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:personal_expenses/presentation/screens/home.dart';
 import 'package:personal_expenses/presentation/screens/reports.dart';
 import 'package:personal_expenses/presentation/screens/setting.dart';
-import 'package:personal_expenses/main.dart';
 
 
 class NavigationBarBottom extends StatefulWidget {
+  const NavigationBarBottom({super.key});
+
   @override
   _NavigationBarState createState() => _NavigationBarState();
 }
@@ -15,9 +16,9 @@ class _NavigationBarState extends State<NavigationBarBottom> {
 
   // BottomNavigation Screens (Home, Reports, Settings)
   final List<Widget> _pages = [
-    HomePage(),
-    ReportsPage(),
-    SettingsScreen()
+    const HomePage(),
+    const ReportsPage(),
+    const SettingsScreen()
   ];
 
   @override

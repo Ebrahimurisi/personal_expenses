@@ -4,7 +4,10 @@ import 'package:month_picker_dialog/month_picker_dialog.dart';
 import 'package:personal_expenses/presentation/screens/expenses.dart';
 import 'AddEntryScreen.dart';
 
+
 class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
   @override
   State<HomePage> createState() => _HomePageState();
 }
@@ -15,7 +18,7 @@ class _HomePageState extends State<HomePage> {
   // Task for change time
   @override
   Widget build(BuildContext context) {
-    void _changeMonth(int monthsToAdd) {
+    void changeMonth(int monthsToAdd) {
       setState(() {
         _currentDate = DateTime(
           _currentDate.year,
@@ -26,32 +29,29 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Expenses'),
+        title: const Text('My Expenses'),
         automaticallyImplyLeading: false,
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
       ),
       body: Column(
         children: [
           Container(
-            padding: EdgeInsets.symmetric(vertical: 16.0),
+            padding: const EdgeInsets.symmetric(vertical: 16.0),
             color: Colors.grey[200],
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 IconButton(
-                  icon: Icon(Icons.arrow_left),
+                  icon: const Icon(Icons.arrow_left),
                   onPressed: () {
-                    _changeMonth(-1); // change the month to previous
+                    changeMonth(-1); // change the month to previous
                   },
                 ),
                 // edite the part of container to show the month picker when press
                 Container(
                   padding:
-                      EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                      const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                   decoration: BoxDecoration(
-                    color: Colors.red[200],
+                    color: Colors.blue[200],
                     borderRadius: BorderRadius.circular(24.0),
                   ),
                   child: GestureDetector(
@@ -88,7 +88,7 @@ class _HomePageState extends State<HomePage> {
                 IconButton(
                   icon: const Icon(Icons.arrow_right),
                   onPressed: () {
-                    _changeMonth(1); // change month to next
+                    changeMonth(1); // change month to next
                   },
                 ),
               ],
@@ -121,16 +121,16 @@ class _HomePageState extends State<HomePage> {
                         style:
                             TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
                       ),
-                      Spacer(),
-                      Text(
+                      const Spacer(),
+                      const Text(
                         'Total \$ 65',
                         style: TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.w600),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       TextButton(
                         onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Expenses(),),);;
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const Expenses(),),);
                         },
                         child: const Text(
                           'View all',
@@ -142,19 +142,41 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
 
-                 ListTile(
-                   tileColor: Colors.blueAccent,
-                   shape: RoundedRectangleBorder(
-                     borderRadius: BorderRadius.circular(15)
-                   ),
-                   leading: CircleAvatar(
-                     backgroundImage: NetworkImage("https://media.istockphoto.com/id/167288271/photo/serious-young-woman-with-arms-crossed.jpg?s=612x612&w=0&k=20&c=9ji0oEfhSexSpqRbrqiZT6Wubkbzcyn_yEHOedZ7ijw="),
-
-                   ),
-                   title: Text("Rahf alruhmi"),
-                   subtitle: Text("Octobar 2023 4"),
-                   trailing: Text("cost \$ 233 "),
-                 )
+                  Container(
+                    padding: const EdgeInsets.only(left: 8),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(
+                        color: Colors.blueAccent, // Border color
+                        width: 1, // Border width
+                      ),
+                      color: Colors.blue.shade200,
+                    ),
+                    width: double.infinity,
+                    height: 60,
+                    child: const Row(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        CircleAvatar(
+                          radius: 25,
+                          backgroundImage: AssetImage(
+                              'assets/images/logo_app.jpg'),
+                        ),
+                        SizedBox(width: 2,),
+                        Column(mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text('Food'),
+                            Text('October 7'),
+                          ],
+                        ),
+                        Spacer(),
+                        Padding(
+                          padding: EdgeInsets.only(right: 8.0),
+                          child: Center(child: Text('\$10.0'),),
+                        ),
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
@@ -167,12 +189,12 @@ class _HomePageState extends State<HomePage> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  AddEntryScreen(), // افتح واجهة AddEntryScreen
+                  const AddEntryScreen(), // افتح واجهة AddEntryScreen
             ),
           );
         },
-        child: Icon(Icons.add),
         backgroundColor: Colors.blue,
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -182,11 +204,11 @@ class _HomePageState extends State<HomePage> {
     return Card(
       child: Container(
         width: 100,
-        padding: EdgeInsets.all(12.0),
+        padding: const EdgeInsets.all(12.0),
         child: Column(
           children: [
             Icon(icon, size: 24.0, color: Colors.black54),
-            SizedBox(height: 8.0),
+            const SizedBox(height: 8.0),
             Text(
               value,
               style: TextStyle(
@@ -195,10 +217,10 @@ class _HomePageState extends State<HomePage> {
                 color: isGreen ? Colors.green : Colors.red,
               ),
             ),
-            SizedBox(height: 4.0),
+            const SizedBox(height: 4.0),
             Text(
               title,
-              style: TextStyle(fontSize: 14.0, color: Colors.black54),
+              style: const TextStyle(fontSize: 14.0, color: Colors.black54),
             ),
           ],
         ),

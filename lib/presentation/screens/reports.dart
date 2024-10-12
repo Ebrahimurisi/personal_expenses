@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
 class ReportsPage extends StatefulWidget {
+  const ReportsPage({super.key});
+
   @override
   _ReportsPageState createState() => _ReportsPageState();
 }
@@ -15,10 +17,7 @@ class _ReportsPageState extends State<ReportsPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('My Expenses'),
-        centerTitle: true,
-        backgroundColor: Colors.white,
-        elevation: 0,
+        title: const Text('My Expenses'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -60,10 +59,10 @@ class _ReportsPageState extends State<ReportsPage> {
                 ),
               ],
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Line Chart Section
-            Text(
+            const Text(
               'Expense Trends',
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
@@ -72,7 +71,7 @@ class _ReportsPageState extends State<ReportsPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: LineChart(
                   LineChartData(
-                    gridData: FlGridData(show: true),
+                    gridData: const FlGridData(show: true),
                     titlesData: FlTitlesData(
                       bottomTitles: AxisTitles(
                         sideTitles: SideTitles(
@@ -80,19 +79,19 @@ class _ReportsPageState extends State<ReportsPage> {
                           getTitlesWidget: (value, meta) {
                             switch (value.toInt()) {
                               case 0:
-                                return Text('Jan');
+                                return const Text('Jan');
                               case 2:
-                                return Text('Feb');
+                                return const Text('Feb');
                               case 4:
-                                return Text('Mar');
+                                return const Text('Mar');
                               case 6:
-                                return Text('Apr');
+                                return const Text('Apr');
                               case 8:
-                                return Text('May');
+                                return const Text('May');
                               case 10:
-                                return Text('Jun');
+                                return const Text('Jun');
                               default:
-                                return Text('');
+                                return const Text('');
                             }
                           },
                         ),
@@ -111,12 +110,12 @@ class _ReportsPageState extends State<ReportsPage> {
                     lineBarsData: [
                       LineChartBarData(
                         spots: [
-                          FlSpot(0, 50),
-                          FlSpot(2, 100),
-                          FlSpot(4, 75),
-                          FlSpot(6, 150),
-                          FlSpot(8, 200),
-                          FlSpot(10, 180),
+                          const FlSpot(0, 50),
+                          const FlSpot(2, 100),
+                          const FlSpot(4, 75),
+                          const FlSpot(6, 150),
+                          const FlSpot(8, 200),
+                          const FlSpot(10, 180),
                         ],
                         isCurved: true,
                         barWidth: 4,
@@ -131,7 +130,7 @@ class _ReportsPageState extends State<ReportsPage> {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Additional Info or Summary Section
             Container(
@@ -144,7 +143,7 @@ class _ReportsPageState extends State<ReportsPage> {
                     color: Colors.grey.withOpacity(0.2),
                     spreadRadius: 2,
                     blurRadius: 5,
-                    offset: Offset(0, 3),
+                    offset: const Offset(0, 3),
                   ),
                 ],
               ),
@@ -170,9 +169,9 @@ class _ReportsPageState extends State<ReportsPage> {
       children: [
         Text(
           value,
-          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+          style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
         ),
-        Text(label, style: TextStyle(color: Colors.grey)),
+        Text(label, style: const TextStyle(color: Colors.grey)),
       ],
     );
   }

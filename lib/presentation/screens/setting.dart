@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:personal_expenses/presentation/screens/login_screen.dart';
 import 'package:provider/provider.dart';
 import '/theme_provider.dart';
 
 class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     // Access the ThemeProvider from the widget tree
@@ -11,7 +12,7 @@ class SettingsScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Setting'),
+        title: const Text('Setting'),
         automaticallyImplyLeading: false,
         centerTitle: true,
         backgroundColor:
@@ -22,11 +23,11 @@ class SettingsScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         children: [
           // Theme Mode Section
-          Text(
+          const Text(
             'Theme Mode',
             style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 8.0),
+          const SizedBox(height: 8.0),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -34,23 +35,23 @@ class SettingsScreen extends StatelessWidget {
               _buildThemeButton(context, false, themeProvider.isLightTheme),
             ],
           ),
-          Divider(height: 32.0),
+          const Divider(height: 32.0),
 
           // Language Section
           ListTile(
-            leading: Icon(Icons.language, color: Colors.black54),
-            title: Text(
+            leading: const Icon(Icons.language, color: Colors.black54),
+            title: const Text(
               'Language',
               style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
             ),
             onTap: () {},
           ),
-          Divider(height: 32.0),
+          const Divider(height: 32.0),
 
           // "Tell us a problem or leave a comment" Section
           ListTile(
-              leading: Icon(Icons.comment, color: Colors.black54),
-              title: Text(
+              leading: const Icon(Icons.comment, color: Colors.black54),
+              title: const Text(
                 'Tell us a problem or leave a comment',
                 style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
               ),
@@ -64,7 +65,7 @@ class SettingsScreen extends StatelessWidget {
   void _showCommentSheet(BuildContext context) {
     showModalBottomSheet(
       context: context,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(16.0)),
       ),
       isScrollControlled: true,
@@ -80,31 +81,31 @@ class SettingsScreen extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "What's wrong?",
                 style: TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 16.0),
-              TextField(
+              const SizedBox(height: 16.0),
+              const TextField(
                 decoration: InputDecoration(
                   border: OutlineInputBorder(),
                   hintText: 'Tell us your problem or leave a comment',
                 ),
                 maxLines: 4,
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               Center(
                 child: ElevatedButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('Submit'),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue,
                   ),
+                  child: const Text('Submit'),
                 ),
               ),
             ],
@@ -127,7 +128,7 @@ class SettingsScreen extends StatelessWidget {
         themeProvider.toggleTheme(isLight);
       },
       child: Container(
-        padding: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
         decoration: BoxDecoration(
           color: currentMode == isLight ? Colors.blue[100] : Colors.grey[200],
           borderRadius: BorderRadius.circular(24.0),

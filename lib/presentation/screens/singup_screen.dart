@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:personal_expenses/presentation/screens/bottomNavigation.dart';
-import 'package:personal_expenses/presentation/screens/home.dart';
 import 'package:personal_expenses/presentation/screens/login_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
   _SignUpScreenState createState() => _SignUpScreenState();
 }
@@ -141,6 +142,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   ),
                 ),
                 obscureText: true,
+                obscuringCharacter: '*',
                 validator: (value) {
                   if (value != passwordController.text) {
                     return 'Passwords do not match';
@@ -193,7 +195,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => NavigationBarBottom(),
+                          builder: (context) => const NavigationBarBottom(),
                         ),
                       );
                     } else {
@@ -215,13 +217,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => LoginScreen()),
+                      MaterialPageRoute(builder: (context) => const LoginScreen()),
                     );
                   },
-                  child: const Text(
-                    'Already have an account? Login',
-                    style: TextStyle(color: Colors.blue),
-                  ),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [Text(
+                      'Already have an account?',
+                    ),Text('Log in', style: TextStyle(color: Colors.blue),)],
+                  )
                 ),
               ),
             ],

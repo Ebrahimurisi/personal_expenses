@@ -4,9 +4,10 @@ import 'package:personal_expenses/data/model/models.dart';
 import 'package:personal_expenses/domain/expense_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:personal_expenses/theme_provider.dart'; // Import the ThemeProvider
-import '../../data/repository/expensesRepository.dart';
 
 class AddEntryScreen extends StatefulWidget {
+  const AddEntryScreen({super.key});
+
   @override
   _AddEntryScreenState createState() => _AddEntryScreenState();
 }
@@ -15,7 +16,6 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
   String _selectedCategory = 'Donations and Gifts'; // Default category
-  String _selectedPaymentMethod = 'Cash'; // Default payment method
 
   // Controllers to capture user input for amount and notes
   final TextEditingController _amountController = TextEditingController();
@@ -37,17 +37,8 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Add Financial Entry'),
+        title: const Text('Add Financial Entry'),
         centerTitle: true,
-        actions: [
-          // Theme toggle switch in the AppBar
-          Switch(
-            value: themeProvider.isLightTheme,
-            onChanged: (value) {
-              themeProvider.toggleTheme(value); // Call to change theme
-            },
-          ),
-        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -55,7 +46,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
           builder: (BuildContext context, ExpenseController p, Widget? child) {
             return Stack(
               children: [
-                if (p.isLoading) CircularProgressIndicator(),
+                // if (p.isLoading) CircularProgressIndicator(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -69,61 +60,41 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                       ),
                       keyboardType: TextInputType.number,
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
 
                     // Category picker
                     Row(
                       children: [
-                        Icon(Icons.category, color: Colors.black54),
-                        SizedBox(width: 8.0),
+                        const Icon(Icons.category, color: Colors.black54),
+                        const SizedBox(width: 8.0),
                         Expanded(
                           child: Text(
                             _selectedCategory,
-                            style: TextStyle(fontSize: 16.0),
+                            style: const TextStyle(fontSize: 16.0),
                           ),
                         ),
                         IconButton(
-                          icon: Icon(Icons.arrow_drop_down),
+                          icon: const Icon(Icons.arrow_drop_down),
                           onPressed: () {
                             _showCategoryPicker(context);
                           },
                         ),
                       ],
                     ),
-                    Divider(),
-
-                    // Payment method picker
-                    Row(
-                      children: [
-                        Icon(Icons.account_balance_wallet, color: Colors.black54),
-                        SizedBox(width: 8.0),
-                        Expanded(
-                          child: Text(
-                            _selectedPaymentMethod,
-                            style: TextStyle(fontSize: 16.0),
-                          ),
-                        ),
-                        IconButton(
-                          icon: Icon(Icons.arrow_drop_down),
-                          onPressed: () {
-                            _showPaymentMethodPicker(context);
-                          },
-                        ),
-                      ],
-                    ),
-                    Divider(),
+                    const Divider(),
+                    const SizedBox(height: 16.0),
 
                     // Notes field
                     TextFormField(
                       controller: _notesController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         labelText: 'Notes',
                         prefixIcon: Icon(Icons.notes),
                         border: OutlineInputBorder(),
                       ),
                       maxLines: 3,
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(height: 16.0),
 
                     // Date and time picker
                     Row(
@@ -134,11 +105,11 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                           onTap: () => _selectDate(context),
                           child: Row(
                             children: [
-                              Icon(Icons.calendar_today),
-                              SizedBox(width: 8.0),
+                              const Icon(Icons.calendar_today),
+                              const SizedBox(width: 8.0),
                               Text(
                                 DateFormat.yMd().format(_selectedDate),
-                                style: TextStyle(fontSize: 16.0),
+                                style: const TextStyle(fontSize: 16.0),
                               ),
                             ],
                           ),
@@ -149,18 +120,18 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                           onTap: () => _selectTime(context),
                           child: Row(
                             children: [
-                              Icon(Icons.access_time),
-                              SizedBox(width: 8.0),
+                              const Icon(Icons.access_time),
+                              const SizedBox(width: 8.0),
                               Text(
                                 _selectedTime.format(context),
-                                style: TextStyle(fontSize: 16.0),
+                                style: const TextStyle(fontSize: 16.0),
                               ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: 32.0),
+                    const SizedBox(height: 32.0),
 
                     // Add button
                     Center(
@@ -171,7 +142,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                           // Validate amount input
                           if (amountInput.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Please enter an amount')),
+                              const SnackBar(content: Text('Please enter an amount')),
                             );
                             return;
                           }
@@ -182,7 +153,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                           // Validate amount
                           if (amount <= 0) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(content: Text('Invalid amount')),
+                              const SnackBar(content: Text('Invalid amount')),
                             );
                             return;
                           }
@@ -208,10 +179,10 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                           // Close the screen
                           Navigator.pop(context);
                         },
-                        child: Text('Add'),
                         style: ElevatedButton.styleFrom(
-                          minimumSize: Size(double.infinity, 50),
+                          minimumSize: const Size(double.infinity, 50),
                         ),
+                        child: const Text('Add'),
                       ),
                     ),
                   ],
@@ -246,7 +217,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
         return ListView(
           children: [
             ListTile(
-              title: Text('Donations and Gifts'),
+              title: const Text('Donations and Gifts'),
               onTap: () {
                 setState(() {
                   _selectedCategory = 'Donations and Gifts';
@@ -255,7 +226,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
               },
             ),
             ListTile(
-              title: Text('Food and Drinks'),
+              title: const Text('Food and Drinks'),
               onTap: () {
                 setState(() {
                   _selectedCategory = 'Food and Drinks';
@@ -264,7 +235,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
               },
             ),
             ListTile(
-              title: Text('Utilities'),
+              title: const Text('Utilities'),
               onTap: () {
                 setState(() {
                   _selectedCategory = 'Utilities';
@@ -278,45 +249,6 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     );
   }
 
-  // Payment method picker modal
-  void _showPaymentMethodPicker(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (BuildContext context) {
-        return ListView(
-          children: [
-            ListTile(
-              title: Text('Cash'),
-              onTap: () {
-                setState(() {
-                  _selectedPaymentMethod = 'Cash';
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('Credit Card'),
-              onTap: () {
-                setState(() {
-                  _selectedPaymentMethod = 'Credit Card';
-                });
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              title: Text('Debit Card'),
-              onTap: () {
-                setState(() {
-                  _selectedPaymentMethod = 'Debit Card';
-                });
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   // Date picker
   Future<void> _selectDate(BuildContext context) async {

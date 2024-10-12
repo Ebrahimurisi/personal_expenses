@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:personal_expenses/constant/theme_color/dark_theme_color.dart';
 import 'package:personal_expenses/constant/theme_color/light_theme_color.dart';
 
 ThemeData getLightTheme() => ThemeData(
@@ -8,13 +6,13 @@ ThemeData getLightTheme() => ThemeData(
     primarySwatch: Colors.teal,
     primaryColor: Colors.teal, // Primary color for AppBar, FAB, etc.
     hintColor: Colors.orange, // Accent color for interactive elements
-    scaffoldBackgroundColor: Colors.white, // Background color of the scaffold
-    appBarTheme: const AppBarTheme(
-      color: Colors.teal, // Background color of the AppBar
-      elevation: 2.0,
-      iconTheme: IconThemeData(color: Colors.white), // Color of AppBar icons
-      titleTextStyle: TextStyle(
-        color: Colors.white,
+    scaffoldBackgroundColor: Colors.grey[200], // Background color of the scaffold
+    appBarTheme: AppBarTheme(
+      color: LightThemeColors.appBarColor, // Background color of the AppBar
+      elevation: 0,
+      iconTheme: const IconThemeData(color: Colors.white), // Color of AppBar icons
+      titleTextStyle: const TextStyle(
+        color: Colors.black54,
         fontSize: 20.0,
         fontWeight: FontWeight.bold,
       ),
@@ -52,17 +50,17 @@ ThemeData getLightTheme() => ThemeData(
         borderRadius: BorderRadius.circular(12.0),
         borderSide: const BorderSide(color: Colors.teal), // Enabled border color
       ),
-      focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(12.0),
-        borderSide: const BorderSide(color: Colors.orange, width: 2.0), // Focused border color
+      focusedBorder: UnderlineInputBorder(
+        borderRadius: BorderRadius.circular(16.0),
+        borderSide: const BorderSide(color: Colors.orange, width: 1.0), // Focused border color
       ),
       labelStyle: const TextStyle(color: Colors.teal), // Label color
       hintStyle: TextStyle(color: Colors.teal[200]), // Hint text color
     ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      foregroundColor: Colors.white, // Text color
-      backgroundColor: Colors.black38, // Button background color
+      foregroundColor: Colors.black54, // Text color
+      backgroundColor: Colors.teal[200], // Button background color
       padding: const EdgeInsets.symmetric(vertical: 15), // Button height
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(10),
