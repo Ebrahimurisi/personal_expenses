@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:personal_expenses/data/model/models.dart';
 import 'package:personal_expenses/domain/expense_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:personal_expenses/theme_provider.dart'; // Import the ThemeProvider
+import 'package:personal_expenses/theme_provider.dart'; // استيراد ThemeProvider
 
 class AddEntryScreen extends StatefulWidget {
   const AddEntryScreen({super.key});
@@ -15,13 +15,13 @@ class AddEntryScreen extends StatefulWidget {
 class _AddEntryScreenState extends State<AddEntryScreen> {
   DateTime _selectedDate = DateTime.now();
   TimeOfDay _selectedTime = TimeOfDay.now();
-  String _selectedCategory = 'Donations and Gifts'; // Default category
+  String _selectedCategory = 'Donations and Gifts'; // الفئة الافتراضية
 
-  // Controllers to capture user input for amount and notes
+  // Controllers لالتقاط إدخال المستخدم للمبلغ والملاحظات
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _notesController = TextEditingController();
 
-  // Mock userId (this can be replaced with the actual userId)
+  // معرف المستخدم الوهمي (يمكن استبداله بالمعرف الفعلي)
   int userId = 1;
 
   @override
@@ -33,7 +33,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final themeProvider = Provider.of<ThemeProvider>(context); // Access the ThemeProvider
+    final themeProvider = Provider.of<ThemeProvider>(context); // الوصول إلى ThemeProvider
 
     return Scaffold(
       appBar: AppBar(
@@ -42,15 +42,15 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Consumer<ExpenseController>(
-          builder: (BuildContext context, ExpenseController p, Widget? child) {
+        child: Consumer<ExpenseProvider>(
+          builder: (BuildContext context, ExpenseProvider p, Widget? child) {
             return Stack(
               children: [
-                // if (p.isLoading) CircularProgressIndicator(),
+                if (p.isLoading) const CircularProgressIndicator(),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    // Amount field
+                    // حقل إدخال المبلغ
                     TextFormField(
                       controller: _amountController,
                       decoration: const InputDecoration(
@@ -62,7 +62,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                     ),
                     const SizedBox(height: 16.0),
 
-                    // Category picker
+                    // منتقي الفئة
                     Row(
                       children: [
                         const Icon(Icons.category, color: Colors.black54),
@@ -84,7 +84,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                     const Divider(),
                     const SizedBox(height: 16.0),
 
-                    // Notes field
+                    // حقل إدخال الملاحظات
                     TextFormField(
                       controller: _notesController,
                       decoration: const InputDecoration(
@@ -96,11 +96,11 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                     ),
                     const SizedBox(height: 16.0),
 
-                    // Date and time picker
+                    // منتقي التاريخ والوقت
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        // Select date
+                        // اختيار التاريخ
                         InkWell(
                           onTap: () => _selectDate(context),
                           child: Row(
@@ -115,7 +115,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                           ),
                         ),
 
-                        // Select time
+                        // اختيار الوقت
                         InkWell(
                           onTap: () => _selectTime(context),
                           child: Row(
@@ -133,13 +133,13 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                     ),
                     const SizedBox(height: 32.0),
 
-                    // Add button
+                    // زر الإضافة
                     Center(
                       child: ElevatedButton(
                         onPressed: () {
                           final String amountInput = _amountController.text;
 
-                          // Validate amount input
+                          // التحقق من صحة إدخال المبلغ
                           if (amountInput.isEmpty) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Please enter an amount')),
@@ -147,10 +147,10 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                             return;
                           }
 
-                          // Convert amount to double
+                          // تحويل المبلغ إلى double
                           final double amount = double.tryParse(amountInput) ?? 0.0;
 
-                          // Validate amount
+                          // التحقق من صحة المبلغ
                           if (amount <= 0) {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Invalid amount')),
@@ -158,7 +158,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                             return;
                           }
 
-                          // Construct the expense
+                          // إنشاء كائن النفقة
                           Expense expense = Expense(
                             amount: amount,
                             description: _notesController.text,
@@ -173,10 +173,10 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                             userId: userId,
                           );
 
-                          // Save the expense
-                          p.createExpense(expense);
+                          // حفظ النفقة
+                          p.addExpense(expense);
 
-                          // Close the screen
+                          // إغلاق الشاشة
                           Navigator.pop(context);
                         },
                         style: ElevatedButton.styleFrom(
@@ -195,7 +195,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     );
   }
 
-  // Helper function to map selected category to its ID
+  // وظيفة مساعد لتحديد معرف الفئة
   int _getCategoryId(String categoryName) {
     switch (categoryName) {
       case 'Donations and Gifts':
@@ -209,7 +209,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     }
   }
 
-  // Category picker modal
+  // عرض منتقي الفئات
   void _showCategoryPicker(BuildContext context) {
     showModalBottomSheet(
       context: context,
@@ -249,8 +249,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     );
   }
 
-
-  // Date picker
+  // منتقي التاريخ
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? pickedDate = await showDatePicker(
       context: context,
@@ -265,7 +264,7 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
     }
   }
 
-  // Time picker
+  // منتقي الوقت
   Future<void> _selectTime(BuildContext context) async {
     final TimeOfDay? pickedTime = await showTimePicker(
       context: context,

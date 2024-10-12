@@ -1,8 +1,8 @@
-import '../model/models.dart';// Your models (User, Category, Expense, Settings)
-import 'package:personal_expenses/data/local_services/database_helper.dart';
+import '../model/models.dart'; // تأكد من استيراد موديلاتك (User, Category, Expense, Settings)
+import 'package:personal_expenses/data/local_services/database_helper.dart'; // تأكد من استيراد DatabaseHelper
 
 class Repository {
-  final DatabaseHelper localDb = DatabaseHelper();
+  final DatabaseHelper localDb = DatabaseHelper(); // تأكد من تعريف localDb كـ DatabaseHelper
 
   // Users
   Future<List<User>> getAllUsers() async {

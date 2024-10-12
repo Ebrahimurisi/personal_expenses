@@ -1,4 +1,3 @@
-
 class User {
   final int? id;
   final String username;
@@ -6,6 +5,7 @@ class User {
 
   User({this.id, required this.username, required this.password});
 
+  // لتحويل كائن User إلى JSON لحفظه في قاعدة البيانات
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -14,12 +14,12 @@ class User {
     };
   }
 
-
-  factory User.fromJson(Map<String, dynamic> data) {
+  // لإنشاء كائن User من JSON عند جلب البيانات من قاعدة البيانات
+  factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: data['id'],
-      username: data['username'],
-      password: data['password'],
+      id: json['id'],
+      username: json['username'],
+      password: json['password'],
     );
   }
 
@@ -29,13 +29,13 @@ class User {
   }
 }
 
-
 class Category {
   final int? id;
   final String name;
 
   Category({this.id, required this.name});
 
+  // لتحويل كائن Category إلى JSON لحفظه في قاعدة البيانات
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -43,10 +43,11 @@ class Category {
     };
   }
 
-  factory Category.fromJson(Map<String, dynamic> data) {
+  // لإنشاء كائن Category من JSON عند جلب البيانات من قاعدة البيانات
+  factory Category.fromJson(Map<String, dynamic> json) {
     return Category(
-      id: data['id'],
-      name: data['name'],
+      id: json['id'],
+      name: json['name'],
     );
   }
 
@@ -55,7 +56,6 @@ class Category {
     return 'Category{id: $id, name: $name}';
   }
 }
-
 class Expense {
   final int? id;
   final double amount;
@@ -63,6 +63,7 @@ class Expense {
   final int categoryId;
   final String date;
   final int userId;
+  String? categoryName;  // إضافة اسم الفئة
 
   Expense({
     this.id,
@@ -71,35 +72,35 @@ class Expense {
     required this.categoryId,
     required this.date,
     required this.userId,
+    this.categoryName,
   });
 
+  // لتحويل كائن Expense إلى JSON لحفظه في قاعدة البيانات
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'amount': amount,
       'description': description,
-      'category_id': categoryId,
+      'categoryId': categoryId,
       'date': date,
-      'user_id': userId,
+      'userId': userId,
     };
   }
 
-  factory Expense.fromJson(Map<String, dynamic> data) {
+  // لإنشاء كائن Expense من JSON عند جلب البيانات من قاعدة البيانات
+  factory Expense.fromJson(Map<String, dynamic> json) {
     return Expense(
-      id: data['id'],
-      amount: data['amount'],
-      description: data['description'],
-      categoryId: data['category_id'],
-      date: data['date'],
-      userId: data['user_id'],
+      id: json['id'],
+      amount: json['amount'],
+      description: json['description'],
+      categoryId: json['categoryId'],
+      date: json['date'],
+      userId: json['userId'],
     );
   }
-
-  @override
-  String toString() {
-    return 'Expense{id: $id, amount: $amount, description: $description, categoryId: $categoryId, date: $date, userId: $userId}';
-  }
 }
+
+
 
 class Settings {
   final int? id;
@@ -108,7 +109,7 @@ class Settings {
 
   Settings({this.id, required this.language, required this.theme});
 
-
+  // لتحويل كائن Settings إلى JSON لحفظه في قاعدة البيانات
   Map<String, dynamic> toJson() {
     return {
       'id': id,
@@ -117,12 +118,12 @@ class Settings {
     };
   }
 
-
-  factory Settings.fromJson(Map<String, dynamic> data) {
+  // لإنشاء كائن Settings من JSON عند جلب البيانات من قاعدة البيانات
+  factory Settings.fromJson(Map<String, dynamic> json) {
     return Settings(
-      id: data['id'],
-      language: data['language'],
-      theme: data['theme'],
+      id: json['id'],
+      language: json['language'],
+      theme: json['theme'],
     );
   }
 

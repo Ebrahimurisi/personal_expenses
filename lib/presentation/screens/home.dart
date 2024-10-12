@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:month_picker_dialog/month_picker_dialog.dart';
-import 'package:personal_expenses/presentation/screens/expenses.dart';
 import 'AddEntryScreen.dart';
+import 'expenses_screen.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -33,72 +33,70 @@ class _HomePageState extends State<HomePage> {
         automaticallyImplyLeading: false,
       ),
       body: SingleChildScrollView(
-      child:Column(
-        children: [
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 16.0),
-            color: Colors.grey[200],
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  icon: const Icon(Icons.arrow_left),
-                  onPressed: () {
-                    changeMonth(-1); // change the month to previous
-                  },
-                ),
-                // edite the part of container to show the month picker when press
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-                  decoration: BoxDecoration(
-                    color: Colors.blue[200],
-                    borderRadius: BorderRadius.circular(24.0),
-                  ),
-                  child: GestureDetector(
-                    onTap: () async {
-                      final DateTime? picked = await showMonthPicker(
-                        context: context,
-                        initialDate: _currentDate,
-                        // current date
-                        firstDate: DateTime(2020),
-                        // first year select
-                        lastDate: DateTime(2030), // last year maximum
-                      );
-                      if (picked != null && picked != _currentDate) {
-                        setState(() {
-                          _currentDate =
-                              picked; // update date when select month
-                        });
-                      }
+        child:Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 16.0),
+              color: Colors.grey[200],
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_left),
+                    onPressed: () {
+                      changeMonth(-1); // change the month to previous
                     },
-                    child: Row(
-                      children: [
-                        const Icon(Icons.calendar_today, color: Colors.black54),
-                        const SizedBox(width: 8.0),
-                        Text(
-                          DateFormat.yMMMM().format(_currentDate),
-                          // show month
-                          style: const TextStyle(
-                              fontSize: 16.0, fontWeight: FontWeight.w600),
-                        ),
-                      ],
+                  ),
+                  // edite the part of container to show the month picker when press
+                  Container(
+                    padding:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                    decoration: BoxDecoration(
+                      color: Colors.blue[200],
+                      borderRadius: BorderRadius.circular(24.0),
+                    ),
+                    child: GestureDetector(
+                      onTap: () async {
+                        final DateTime? picked = await showMonthPicker(
+                          context: context,
+                          initialDate: _currentDate,
+                          // current date
+                          firstDate: DateTime(2020),
+                          // first year select
+                          lastDate: DateTime(2030), // last year maximum
+                        );
+                        if (picked != null && picked != _currentDate) {
+                          setState(() {
+                            _currentDate =
+                                picked; // update date when select month
+                          });
+                        }
+                      },
+                      child: Row(
+                        children: [
+                          const Icon(Icons.calendar_today, color: Colors.black54),
+                          const SizedBox(width: 8.0),
+                          Text(
+                            DateFormat.yMMMM().format(_currentDate),
+                            // show month
+                            style: const TextStyle(
+                                fontSize: 16.0, fontWeight: FontWeight.w600),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.arrow_right),
-                  onPressed: () {
-                    changeMonth(1); // change month to next
-                  },
-                ),
-              ],
+                  IconButton(
+                    icon: const Icon(Icons.arrow_right),
+                    onPressed: () {
+                      changeMonth(1); // change month to next
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 _buildInfoCard('Income', '\$ 0', Icons.account_balance),
                 _buildInfoCard(
@@ -107,83 +105,82 @@ class _HomePageState extends State<HomePage> {
                 _buildInfoCard('Expenses', '\$ 0', Icons.money_off),
               ],
             ),
-          ),
-          Card(
-            margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Text(
-                        'Today',
-                        style:
-                            TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
-                      ),
-                      const Spacer(),
-                      const Text(
-                        'Total \$ 65',
-                        style: TextStyle(
-                            fontSize: 16.0, fontWeight: FontWeight.w600),
-                      ),
-                      const Spacer(),
-                      TextButton(
-                        onPressed: () {
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => const Expenses(),),);
-                        },
-                        child: const Text(
-                          'View all',
-                          style: TextStyle(
-                              color: Colors.blue, fontWeight: FontWeight.w600),
-                        ),
-                      ),
-
-                    ],
-                  ),
-
-                  Container(
-                    padding: const EdgeInsets.only(left: 8),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(
-                        color: Colors.blueAccent, // Border color
-                        width: 1, // Border width
-                      ),
-                      color: Colors.blue.shade200,
-                    ),
-                    width: double.infinity,
-                    height: 60,
-                    child: const Row(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
+            Card(
+              margin: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
                       children: [
-                        CircleAvatar(
-                          radius: 25,
-                          backgroundImage: AssetImage(
-                              'assets/images/logo_app.jpg'),
+                        const Text(
+                          'Today',
+                          style:
+                          TextStyle(fontSize: 16.0, fontWeight: FontWeight.w600),
                         ),
-                        SizedBox(width: 2,),
-                        Column(mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text('Food'),
-                            Text('October 7'),
-                          ],
+                        const Spacer(),
+                        const Text(
+                          'Total \$ 65',
+                          style: TextStyle(
+                              fontSize: 16.0, fontWeight: FontWeight.w600),
                         ),
-                        Spacer(),
-                        Padding(
-                          padding: EdgeInsets.only(right: 8.0),
-                          child: Center(child: Text('\$10.0'),),
+                        const Spacer(),
+                        TextButton(
+                          onPressed: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const  ExpensesScreen(),),);
+                          },
+                          child: const Text(
+                            'View all',
+                            style: TextStyle(
+                                color: Colors.blue, fontWeight: FontWeight.w600),
+                          ),
                         ),
+
                       ],
                     ),
-                  )
-                ],
+
+                    Container(
+                      padding: const EdgeInsets.only(left: 8),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(12),
+                        border: Border.all(
+                          color: Colors.blueAccent, // Border color
+                          width: 1, // Border width
+                        ),
+                        color: Colors.blue.shade200,
+                      ),
+                      width: double.infinity,
+                      height: 60,
+                      child: const Row(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          CircleAvatar(
+                            radius: 25,
+                            backgroundImage: AssetImage(
+                                'assets/images/logo_app.jpg'),
+                          ),
+                          SizedBox(width: 2,),
+                          Column(mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text('Food'),
+                              Text('October 7'),
+                            ],
+                          ),
+                          Spacer(),
+                          Padding(
+                            padding: EdgeInsets.only(right: 8.0),
+                            child: Center(child: Text('\$10.0'),),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
-      ),
+          ],
+        ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -191,7 +188,7 @@ class _HomePageState extends State<HomePage> {
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  const AddEntryScreen(), // افتح واجهة AddEntryScreen
+              const AddEntryScreen(), // افتح واجهة AddEntryScreen
             ),
           );
         },
@@ -205,7 +202,7 @@ class _HomePageState extends State<HomePage> {
       {bool isGreen = false}) {
     return Card(
       child: Container(
-        width: 100,
+        width: 90,
         padding: const EdgeInsets.all(12.0),
         child: Column(
           children: [

@@ -16,7 +16,8 @@ class DatabaseProvider {
   }
 
 //initail
-  static Future<Database> _initDatabase() async {
+  static Future<Database> _initDatabase() async  {
+
     String path = join(await getDatabasesPath(), _databaseName);
     return await openDatabase(
       path,
@@ -34,14 +35,24 @@ class DatabaseProvider {
         username TEXT UNIQUE,
         password TEXT
       )
-    ''');
+    ''').then((value)  {
+      print('\n\n\n ================Create First Table Success Fully\n\n\n ================');
+    }).catchError((onError)
+    {
+      print('\n\n\n ================ Can not Create Table:${onError.toString()}===========\n\n\n');
+    });
 
     await db.execute('''
       CREATE TABLE categories (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT
       )
-    ''');
+    ''').then((value)  {
+      print('\n\n\n ================Create First Table Success Fully\n\n\n ================');
+    }).catchError((onError)
+    {
+      print('\n\n\n ================ Can not Create Table:${onError.toString()}===========\n\n\n');
+    });
 
     await db.execute('''
       CREATE TABLE expenses (
@@ -54,7 +65,12 @@ class DatabaseProvider {
         FOREIGN KEY (category_id) REFERENCES categories(id),
         FOREIGN KEY (user_id) REFERENCES users(id)
       )
-    ''');
+    ''').then((value)  {
+      print('\n\n\n ================Create First Table Success Fully\n\n\n ================');
+    }).catchError((onError)
+    {
+      print('\n\n\n ================ Can not Create Table:${onError.toString()}===========\n\n\n');
+    });
 
     await db.execute('''
       CREATE TABLE settings (
@@ -62,13 +78,19 @@ class DatabaseProvider {
         language TEXT,
         theme TEXT
       )
-    ''');
+    ''').then((value)  {
+      print('\n\n\n ================Create First Table Success Fully\n\n\n ================');
+    }).catchError((onError)
+    {
+      print('\n\n\n ================ Can not Create Table:${onError.toString()}===========\n\n\n');
+    });
   }
 
 //onUpgrade
   static Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < newVersion) {
       await db.execute('ALTER TABLE users ADD COLUMN email TEXT');
+      print("onCreate Function");
     }
   }
 
