@@ -6,17 +6,17 @@ class ExpenseProvider with ChangeNotifier {
   List<Expense> _expenses = [];
   bool isLoading = false;
 
-  // getter للحصول على قائمة النفقات
+
   List<Expense> get expenses => _expenses;
 
-  // تحميل النفقات من قاعدة البيانات
+
   Future<void> loadExpenses() async {
     isLoading = true;
     notifyListeners();
     print("Loading expenses...");
 
     try {
-      _expenses = await DatabaseHelper().getAllExpenses();  // جلب النفقات من قاعدة البيانات
+      _expenses = await DatabaseHelper().getAllExpenses();
       print("Expenses loaded successfully: $_expenses");
     } catch (e) {
       print("Error loading expenses: $e");
@@ -26,18 +26,18 @@ class ExpenseProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // إضافة نفقات جديدة
+
   Future<void> addExpense(Expense expense) async {
     print("Adding expense: $expense");
 
     try {
-      await DatabaseHelper().insertExpense(expense);  // إضافة النفقة إلى قاعدة البيانات
+      await DatabaseHelper().insertExpense(expense);
       print("Expense added successfully");
     } catch (e) {
       print("Error adding expense: $e");
     }
 
-    await loadExpenses();  // تحديث قائمة النفقات بعد الإضافة
+    await loadExpenses();
   }
 
   // حذف نفقات
@@ -45,26 +45,25 @@ class ExpenseProvider with ChangeNotifier {
     print("Deleting expense with ID: $id");
 
     try {
-      await DatabaseHelper().deleteExpense(id);  // حذف النفقة من قاعدة البيانات
+      await DatabaseHelper().deleteExpense(id);
       print("Expense deleted successfully");
     } catch (e) {
       print("Error deleting expense: $e");
     }
 
-    await loadExpenses();  // تحديث قائمة النفقات بعد الحذف
+    await loadExpenses();
   }
 
-  // تعديل نفقات موجودة
   Future<void> updateExpense(Expense expense) async {
     print("Updating expense: $expense");
 
     try {
-      await DatabaseHelper().updateExpense(expense);  // تحديث النفقة في قاعدة البيانات
+      await DatabaseHelper().updateExpense(expense);
       print("Expense updated successfully");
     } catch (e) {
       print("Error updating expense: $e");
     }
 
-    await loadExpenses();  // تحديث قائمة النفقات بعد التعديل
+    await loadExpenses();
   }
 }

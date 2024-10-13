@@ -13,21 +13,21 @@ class DatabaseHelper {
 
   DatabaseHelper._internal();
 
-  // الحصول على قاعدة البيانات
+  // git the database
   Future<Database> get database async {
     if (_database != null) return _database!;
     _database = await _initDatabase();
     return _database!;
   }
 
-  // تهيئة قاعدة البيانات وإنشاء الجداول
+  // inital database and table
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'expenses.db');
     return await openDatabase(
       path,
       version: 1,
       onCreate: (db, version) async {
-        // جدول النفقات
+        // expenses table
         await db.execute('''
           CREATE TABLE expenses (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,7 +39,7 @@ class DatabaseHelper {
           )
         ''');
 
-        // جدول المستخدمين
+        // users table
         await db.execute('''
           CREATE TABLE users (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -48,7 +48,7 @@ class DatabaseHelper {
           )
         ''');
 
-        // جدول الفئات
+        // categories table
         await db.execute('''
           CREATE TABLE categories (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -56,7 +56,7 @@ class DatabaseHelper {
           )
         ''');
 
-        // جدول الإعدادات
+        // Setting table
         await db.execute('''
           CREATE TABLE settings (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -68,11 +68,9 @@ class DatabaseHelper {
     );
   }
 
-  // ============== إدارة النفقات ============== //
+  // ============== manages Expenses ============== //
 
-  // جلب كل النفقات
-  // جلب كل النفقات
-  // تعديل طريقة جلب النفقات مع اسم الفئة الصحيح
+  // getAllExpenses
   Future<List<Expense>> getAllExpenses() async {
     final db = await database;
     final List<Map<String, dynamic>> maps = await db.rawQuery('''
@@ -89,13 +87,13 @@ class DatabaseHelper {
         categoryId: maps[i]['categoryId'],
         date: maps[i]['date'],
         userId: maps[i]['userId'],
-        categoryName: maps[i]['categoryName'], // جلب اسم الفئة الصحيح
+        categoryName: maps[i]['categoryName'],
       );
     });
   }
 
 
-  // جلب النفقات بناءً على userId
+  // getExpenses for UserId
   Future<List<Expense>> getExpensesForUser(int userId) async {
     final db = await database;
     final List<Map<String, dynamic>> result = await db.query(
@@ -106,7 +104,7 @@ class DatabaseHelper {
     return result.map((json) => Expense.fromJson(json)).toList();
   }
 
-  // إدخال نفقات جديدة
+  // insertExpense
   Future<int> insertExpense(Expense expense) async {
     final db = await database;
     return await db.insert(
@@ -116,7 +114,7 @@ class DatabaseHelper {
     );
   }
 
-  // حذف نفقة بواسطة المعرف
+  // deleteExpense
   Future<int> deleteExpense(int id) async {
     final db = await database;
     return await db.delete(
@@ -126,7 +124,7 @@ class DatabaseHelper {
     );
   }
 
-  // تحديث نفقة
+  // updateExpense
   Future<int> updateExpense(Expense expense) async {
     final db = await database;
     return await db.update(
@@ -137,9 +135,9 @@ class DatabaseHelper {
     );
   }
 
-  // ============== إدارة المستخدمين ============== //
+  // ============== manages User ============== //
 
-  // جلب كل المستخدمين
+  // getAllUsers
   Future<List<User>> getAllUsers() async {
     final db = await database;
     final List<Map<String, dynamic>> result = await db.query('users');

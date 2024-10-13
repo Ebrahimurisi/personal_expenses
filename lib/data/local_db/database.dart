@@ -90,7 +90,7 @@ class DatabaseProvider {
   static Future _onUpgrade(Database db, int oldVersion, int newVersion) async {
     if (oldVersion < newVersion) {
       await db.execute('ALTER TABLE users ADD COLUMN email TEXT');
-      print("onCreate Function");
+      print("onUpgrade Function");
     }
   }
 
